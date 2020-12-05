@@ -20,6 +20,7 @@ function App() {
     <Router>
       <Route path="/" component={HomeScreen} />
     </Router>
+    <Dashboard/>
   );
 }
 
