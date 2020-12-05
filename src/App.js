@@ -18,7 +18,10 @@ function App() {
   
   return (
     <Router>
-      <Route path="/" component={HomeScreen} />
+      <Switch>
+        <Route path="/" exact component={HomeScreen} />
+        <Route path="/profile" component={ProfileHome} />
+      </Switch>
     </Router>
   );
 }

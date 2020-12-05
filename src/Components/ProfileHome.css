@@ -12,8 +12,9 @@
 }
 
 .Profile-Container {
+    text-align: center;
     height: calc(100vh - 50px);
-    width: 15%;
+    width: 250px;
     background: white;
     margin: 25px;
     border-radius: 40px;
@@ -30,8 +31,8 @@
 
 .Info-Container {
     height: 20%;
-    width: calc(85% - 175px);
-    left: calc(15% + 100px);
+    width: calc(100% - 525px);
+    left: 400px;
     background: white;
     border-radius: 20px;
     position: relative;

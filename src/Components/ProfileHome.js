@@ -2,30 +2,39 @@ import React from 'react';
 import './ProfileHome.css';
 
 /*
-    1. username, 
+    Sidebar: 
+        username, profile pic
+
+    Charities invested
+    Amount 
 */
 
-function ProfileHome() {
-    return(
-        <div className='Main'>
-            <div className='Background'></div>
-            <div className='Outer-Container'>
-                <div className='Profile-Container'>
-                    <img className='User-Image'/>
-                    <h1 className='Title'>[username]</h1>
-                    <p>[desc]</p>
-                </div>
-                <div className='Info-Container'>
-                    <h1>YOUR CHARITIES</h1>
-                    <div className='yes'>
-                        <h1>[...]</h1>
+export default class HomeScreen extends React.Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+            user: 'andrewlee'
+        };
+    }
+
+    render(){
+        return(
+            <div className='Main'>
+                <div className='Background'></div>
+                <div className='Outer-Container'>
+                    <div className='Profile-Container'>
+                        <img className='User-Image'/>
+                        <h1 className='Title'>{this.state.user}</h1>
+                        <p>[desc]</p>
+                    </div>
+                    <div className='Info-Container'>
+                        <h1>YOUR CHARITIES</h1>
+                        <div className='yes'>
+                            <h1>[...]</h1>
+                        </div>
                     </div>
                 </div>
-                
             </div>
-        </div>
-    );
+        );
+    }
 }
-
-
-export default ProfileHome;
