@@ -3,6 +3,7 @@ import ProfileHome from './Components/ProfileHome';
 import firebase from 'firebase';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen';
+import PortfolioOptions from "./Components/PortfolioOptions"
 
 function App() {
   if (!firebase.apps.length) {
@@ -19,8 +20,8 @@ function App() {
   return (
     <Router>
       <Route path="/" component={HomeScreen} />
+      <Route path = "/PortfolioOptions" component = {PortfolioOptions} />
     </Router>
-    <Dashboard/>
   );
 }
 
