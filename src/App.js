@@ -29,6 +29,9 @@ function App() {
         <Route path="/signUp" component = {SignUp}>
     
         </Route>
+        <Route path="/profile" component = {ProfileHome}>
+    
+        </Route>
         {/* <Route path="/">
           <Home /> */}
         {/* </Route> */}
