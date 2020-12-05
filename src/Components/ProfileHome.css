@@ -11,14 +11,15 @@
     width: 100%;
 }
 
-.Profile-Container {
+.sidebar {
     text-align: center;
-    height: calc(100vh - 50px);
-    width: 350px;
+    height: calc(100vh - 100px);
+    width: 300px;
     background: white;
-    margin: 25px;
+    margin: 50px;
     border-radius: 40px;
     position: fixed;
+    box-shadow: 0px 3px 5px -3px black;
 }
 
 .User-Image {
@@ -29,17 +30,64 @@
     margin-top: 50px;
 }
 
-.Info-Container {
-    height: 20%;
-    width: calc(100% - 825px);
-    left: 500px;
-    background: white;
+.info-container {
+    padding: 0;
+    height: 150px;
+    width: calc(100% - 500px);
+    left: 425px;
+    background: transparent;
     border-radius: 20px;
     position: relative;
     margin-left: 0px;
-    margin-top: 50px;
+    margin-top: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
-.yes{
-    position: relative;
+.infobox{
+    text-align: center;
+    background: white;
+    height: 150px;
+    width: 20%;
+    margin: auto;
+    border-radius: 20px;
+    box-shadow: 0px 3px 5px -3px black;
+}
+.infobox-title{
+    text-align: left;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 0;
+    margin: 10px 0 0 20px;
+}
+.infobox-value{
+    text-align: right;
+    font-size: 70px;
+    padding: 0;
+    margin: 0 20px 0 0;
+}
+
+.nav-button-container{
+    width: calc(100% - 20px);
+    height: 50px;
+    margin-left: 20px;
+    text-align: left;
+    display: flex;
+}
+.nav-button-icon{
+    width: 40px;
+    height: 40px;
+    margin: 5px 0 0 5px;
+    border-radius: 50%;
+}
+.nav-button{
+    text-align: left;
+    width: calc(100% - 75px);
+    margin-left: 20px;
+    padding: 0;
+    background: transparent;
+    border: 1px solid transparent;
+    font-size: 20px;
+    outline: none;
 }
