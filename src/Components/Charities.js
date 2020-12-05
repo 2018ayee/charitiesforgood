@@ -10,8 +10,10 @@ function Charities() {
             <button>
                 Filters
             </button>
-            <div></div>
-            <h2>Recommended charities for good:</h2>
+            <div>
+                <h2>Recommended charities for good:</h2>
+                
+            </div>
         </div>
     );
 }
