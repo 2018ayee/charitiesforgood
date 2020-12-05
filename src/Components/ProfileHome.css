@@ -1,0 +1,44 @@
+.Background {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    background: rgb(240, 240, 240);
+}
+
+.Outer-Container {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+
+.Profile-Container {
+    height: calc(100vh - 50px);
+    width: 15%;
+    background: white;
+    margin: 25px;
+    border-radius: 40px;
+    position: fixed;
+}
+
+.User-Image {
+    width: 60%;
+    padding-top: 60%;
+    border-radius: 50%;
+    background: rgb(238, 133, 133);
+    margin-top: 50px;
+}
+
+.Info-Container {
+    height: 20%;
+    width: calc(85% - 175px);
+    left: calc(15% + 100px);
+    background: white;
+    border-radius: 20px;
+    position: relative;
+    margin-left: 0px;
+    margin-top: 50px;
+}
+
+.yes{
+    position: relative;
+}
