@@ -3,7 +3,8 @@ import ProfileHome from './Components/ProfileHome';
 import firebase from 'firebase';
 import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen';
-import SignUp from "./Components/SignUp.js"
+import SignUp from "./Components/SignUp.js";
+import SetupScreen from './screens/SetupScreen';
 
 function App() {
   if (!firebase.apps.length) {
@@ -34,6 +35,7 @@ function App() {
         {/* <Route path="/">
           <Home /> */}
         {/* </Route> */}
+        <Route path='/setup' component = {SetupScreen}/>
       </Switch>
     </div>
   </Router>
