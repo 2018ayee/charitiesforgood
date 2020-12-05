@@ -1,8 +1,9 @@
 import './App.css';
 import ProfileHome from './Components/ProfileHome';
 import firebase from 'firebase';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen';
+import SignUp from "./Components/SignUp.js"
 
 function App() {
   if (!firebase.apps.length) {
@@ -18,8 +19,24 @@ function App() {
   
   return (
     <Router>
-      <Route path="/" component={HomeScreen} />
-    </Router>
+    <div>
+      
+
+      {/* A <Switch> looks through its children <Route>s and
+          renders the first one that matches the current URL. */}
+      <Switch>
+        <Route path="/home" component = {HomeScreen}>
+          
+        </Route>
+        <Route path="/signUp" component = {SignUp}>
+    
+        </Route>
+        {/* <Route path="/">
+          <Home /> */}
+        {/* </Route> */}
+      </Switch>
+    </div>
+  </Router>
   );
 }
 
