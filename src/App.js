@@ -1,10 +1,10 @@
 import './App.css';
-import ProfileHome from './Components/ProfileHome';
+import Welcome from './Components/Welcome';
 
 function App() {
   return (
     <div className="App">
-      <ProfileHome/>
+      <Welcome/>
     </div>
   );
 }
