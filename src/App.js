@@ -41,7 +41,7 @@ function App() {
         <Route path="/signUp" component = {SignUp}/>
         <Route path="/charities" component = {Charities}/>
         <Route path="/profile" component = {Profile}/>
-        <Route path="/charityex" component = {CharityInfo}/>
+        <Route path="/charity/:id" component = {CharityInfo}/>
         <Route path='/setup' component = {SetupScreen}/>
       </Switch>
     </div>
