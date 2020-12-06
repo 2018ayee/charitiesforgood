@@ -143,52 +143,6 @@ class Profile extends React.Component  {
         this.readData(this.state.userid);
     }
 
-    // NEEDS TO BE FIXED: COPIED FROM HOMESCREEN.js
-    //Purpose: onClick for the button Update Interests should take you to /setup
-    handleSubmitInterests(e) {
-        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-        .then((user) => {
-            this.props.history.push('/setup')
-        })
-        .catch((error) => {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            if (errorCode === "auth/invalid-email") {
-                this.setState({ emailError: true, passwordError: false })
-            }
-            else if (errorCode === "auth/wrong-password") {
-                this.setState({ emailError: false, passwordError: true })
-            }
-            else {
-                this.setState({ emailError: true, passwordError: true })
-            }
-            alert(errorMessage)
-        });
-    }
-    
-    // NEEDS TO BE FIXED: COPIED FROM HOMESCREEN.js
-    //Purpose: onClick for the button Find Charities should take you to /charityex
-    handleSubmitCharity(e) {
-        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-        .then((user) => {
-            this.props.history.push('/charityex')
-        })
-        .catch((error) => {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            if (errorCode === "auth/invalid-email") {
-                this.setState({ emailError: true, passwordError: false })
-            }
-            else if (errorCode === "auth/wrong-password") {
-                this.setState({ emailError: false, passwordError: true })
-            }
-            else {
-                this.setState({ emailError: true, passwordError: true })
-            }
-            alert(errorMessage)
-        });
-    }
-
     render(){
         return (
             <React.Fragment>
@@ -216,14 +170,13 @@ class Profile extends React.Component  {
                     <div style={{marginTop: 40}}>
                     <Grid container spacing={2} justify="center">
                         <Grid item>
-                        <Button variant="contained" color="primary" onClick = {this.handleSubmitCharity}>
-                            Find charities
-                        </Button>
                         </Grid>
                         <Grid item>
-                        <Button variant="outlined" color="primary" onClick = {this.handleSubmitInterests}>
+                        <a href='/setup'>
+                        <Button variant="contained" color="primary">
                             Update Interests
                         </Button>
+                        </a>
                         </Grid>
                     </Grid>
                     </div>
