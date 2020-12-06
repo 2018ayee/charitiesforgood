@@ -39,7 +39,9 @@ class HomeScreen extends React.Component {
         // Don't call this.setState() here!
         this.state = { 
             email: "",
-            password: ""
+            password: "",
+            emailError: false,
+            passwordError: false,
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.password = this.password.bind(this);
@@ -49,12 +51,21 @@ class HomeScreen extends React.Component {
     handleSubmit(e) {
         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
         .then((user) => {
-            this.props.history.push('/charities')
+            this.props.history.push('/profile')
         })
         .catch((error) => {
             var errorCode = error.code;
             var errorMessage = error.message;
-            console.log("wrong")
+            if (errorCode === "auth/invalid-email") {
+                this.setState({ emailError: true, passwordError: false })
+            }
+            else if (errorCode === "auth/wrong-password") {
+                this.setState({ emailError: false, passwordError: true })
+            }
+            else {
+                this.setState({ emailError: true, passwordError: true })
+            }
+            alert(errorMessage)
         });
     }
 
@@ -74,7 +85,7 @@ class HomeScreen extends React.Component {
             <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                 <div style = {{"display": "flex","flexDirection": "column", "alignItems":"center", "marginLeft": 80, "marginRight": 40}}>
                 <Avatar style = {{"margin": 10, "marginTop": 100}}>
-                    <LockOutlinedIcon />
+                    <img style={{height: 40, width: 40}} src="https://www.cardiacscience.co.uk/wp-content/uploads/2019/02/412862.002_Blog-images_13_NHAwarenessMonth_N1.png"/>
                 </Avatar>
                 <Typography component="h1" variant="h5">
                     Sign in
@@ -90,6 +101,7 @@ class HomeScreen extends React.Component {
                     name="email"
                     autoComplete="email"
                     onChange = {this.email}
+                    error = {this.state.emailError}
                     autoFocus
                     />
                     <TextField
@@ -103,6 +115,7 @@ class HomeScreen extends React.Component {
                     id="password"
                     autoComplete="current-password"
                     onChange = {this.password}
+                    error = {this.state.passwordError}
                     />
                     <FormControlLabel
                     control={<Checkbox value="remember" color="primary" />}
