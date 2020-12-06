@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-ro
 import HomeScreen from './screens/HomeScreen';
 import SignUp from "./Components/SignUp.js"
 import Charities from './Components/Charities';
+import Dashboard from './Components/Dashboard Template/Dashboard'
 
 function App() {
   if (!firebase.apps.length) {
@@ -35,6 +36,10 @@ function App() {
         <Route path="/charities" component = {Charities}>
 
         </Route>
+        <Route path="/myportfolio" component = {Dashboard}>
+
+        </Route>
+
         {/* <Route path="/">
           <Home /> */}
         {/* </Route> */}
