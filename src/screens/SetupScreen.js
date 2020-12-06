@@ -17,7 +17,6 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Avatar from '@material-ui/core/Avatar';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -222,18 +221,24 @@ export default class SetupScreen extends React.Component{
             this.setState({data: c});
             console.log("PREVIOUS PAGE C:",this.state.data)
 
-            await userRef.update({
+            const updatePromise = await userRef.update({
                 preferences: this.state.selectedCategories,
                 charities: c
             })
+
             this.setState({onFilters: false, onConfirmation: true})
         }
     }
 
     componentDidMount() {
-        if (firebase.auth().currentUser !== null) {
-            this.setState({userId: firebase.auth().currentUser.uid})
-        }
+        firebase.auth().onAuthStateChanged((user) => {
+          if (user) {
+            // User is signed in.
+            this.setState({userId: user.uid})
+          } else {
+            // No user is signed in.
+          }
+        });
     }
 
     render(){
@@ -266,7 +271,6 @@ export default class SetupScreen extends React.Component{
                   <Button color="primary" onClick={this.toFilters}>Next</Button>
               </div>
               <div className="mb-3"></div>
-            </div>
             </div>
         }
 
