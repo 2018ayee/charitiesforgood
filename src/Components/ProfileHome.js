@@ -4,9 +4,12 @@ import './ProfileHome.css';
 
 // Info box component
 function InfoBox(props) {
-    return(
+    return (
         <div className='infobox'>
-            <p className='infobox-title'>{props.title}</p>
+            <span className='infobox-info-container'>
+                <img className='infobox-icon'></img>
+                <p className='infobox-title'>{props.title}</p>
+            </span>
             <p className='infobox-value'>{props.value}</p>
         </div>
     );
@@ -33,8 +36,8 @@ export default class HomeScreen extends React.Component{
                 { title: '[button name]', link: '' }
             ],
             infobox: [
-                { title: 'amount invested', value: '$50.00' },
-                { title: 'charities', value: '4' },
+                { title: 'AMOUNT INVESTED', value: '$50.00' },
+                { title: 'NUMBER OF CHARITIES', value: '4' },
                 { title: 'monthly payment', value: '$20.00' },
                 { title: 'charities', value: '4' }
             ]
@@ -42,21 +45,24 @@ export default class HomeScreen extends React.Component{
     }
 
     render(){
-        return(
+        return (
             <div className='Main'>
                 <div className='Background'></div>
+                <div className='sidebar'>
+                    <img className='User-Image'/>
+                    <h1 className='Title'>{this.state.username}</h1>
+                    {this.state.navbar.map(button => (
+                        <NavButton title={button.title}/>
+                    ))}
+                </div>
                 <div className='Outer-Container'>
-                    <div className='sidebar'>
-                        <img className='User-Image'/>
-                        <h1 className='Title'>{this.state.username}</h1>
-                        {this.state.navbar.map(button => (
-                            <NavButton title={button.title}/>
-                        ))}
-                    </div>
                     <div className='info-container'>
                         {this.state.infobox.map(info => (
                             <InfoBox title={info.title} value={info.value}/>
                         ))}
+                    </div>
+                    <div className='charity-container'>
+                        
                     </div>
                 </div>
             </div>
