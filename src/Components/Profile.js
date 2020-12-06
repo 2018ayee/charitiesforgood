@@ -90,18 +90,8 @@ class Profile extends React.Component  {
         this.getUserID = this.getUserID.bind(this);
         this.getFirstName = this.getFirstName.bind(this);
     }
-
-    getUserID(){
-        firebase.auth().onAuthStateChanged((user) => {
-            if(user){
-                this.setState({userid: user.uid}, () => {console.log(this.state.userid)});
-            } else {
-                console.log("error");
-            }
-        })
-    }
     
-    getFirstName(id){
+    getFirstName(){
         firebase.auth().onAuthStateChanged((user) => {
             if(user){
                 this.setState({userid: user.uid}, () => {console.log(this.state.userid)});
