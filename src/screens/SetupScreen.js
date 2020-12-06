@@ -17,6 +17,29 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Avatar from '@material-ui/core/Avatar';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Link from '@material-ui/core/Link';
+import Box from '@material-ui/core/Box';
+import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormGroup from '@material-ui/core/FormGroup';
+
+class Copyright extends React.Component {
+    render() {
+        return (
+            <Typography variant="body2" color="textSecondary" align="center">
+            {'Copyright © '}
+                Charitable
+                {' '}
+            {new Date().getFullYear()}
+            {'.'}
+            </Typography>
+        );
+    }
+}
 
 export default class SetupScreen extends React.Component{
     constructor(props) {
@@ -203,144 +226,86 @@ export default class SetupScreen extends React.Component{
 
         if (this.state.onFilters) {
             filterScreen = 
-                <React.Fragment>
-                <Typography variant="h6" gutterBottom>
-                    Shipping address
+            <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <div style={{marginTop: 80, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                <Avatar style={{margin:10}}>
+                <AccountBalanceIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                Enter Donation Options
                 </Typography>
-                <Grid container spacing={3}>
+                <form  noValidate style={{width: "100%", marginTop: 30}} >
+                <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
-                    <TextField
-                        required
-                        id="firstName"
-                        name="firstName"
-                        label="First name"
-                        fullWidth
-                        autoComplete="given-name"
-                    />
+                    <FormLabel>
+                    What size charities would you like to support?
+                    </FormLabel>
+                    <FormGroup>
+                        <FormControlLabel
+                            control={<Checkbox checked={this.state.small} onChange={this.handleChangeSmall} name="small" />}
+                            label="Small"
+                        />
+                        <FormControlLabel
+                            control={<Checkbox checked={this.state.medium} onChange={this.handleChangeMedium} name="medium" />}
+                            label="Medium"
+                        />
+                        <FormControlLabel
+                            control={<Checkbox checked={this.state.large} onChange={this.handleChangeLarge} name="large" />}
+                            label="Large"
+                        />
+                    </FormGroup>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                    <TextField
-                        required
-                        id="lastName"
-                        name="lastName"
-                        label="Last name"
-                        fullWidth
-                        autoComplete="family-name"
-                    />
+                    <FormLabel>
+                    Would you like to focus on local issues?
+                    </FormLabel>
+                    <FormGroup>
+                        <FormControlLabel
+                            control={<Checkbox checked={this.state.local} onChange={this.handleChangeLocal} name="local" />}
+                            label="Local"
+                        />
+                        <FormControlLabel
+                            control={<Checkbox checked={this.state.global} onChange={this.handleChangeGlobal} name="global" />}
+                            label="Global"
+                        />
+                    </FormGroup>
                     </Grid>
                     <Grid item xs={12}>
-                    <TextField
-                        required
-                        id="address1"
-                        name="address1"
-                        label="Address line 1"
-                        fullWidth
-                        autoComplete="shipping address-line1"
-                    />
+                    <FormLabel>How much would you like to contribute each month?</FormLabel>   
+                    <FormLabel style={{marginTop: 30, display: 'flex', flexDirection: 'column', alignItems: 'center', fontWeight: '500', fontSize: '20px'}}>${this.state.donationAmount}</FormLabel>
+                    <RangeSlider
+                          value={this.state.donationAmount}
+                          onChange={e => this.setState({donationAmount: e.target.value})}
+                          min={20}
+                          max={100}
+                        />
+
                     </Grid>
-                    <Grid item xs={12}>
-                    <TextField
-                        id="address2"
-                        name="address2"
-                        label="Address line 2"
-                        fullWidth
-                        autoComplete="shipping address-line2"
-                    />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                    <TextField
-                        required
-                        id="city"
-                        name="city"
-                        label="City"
-                        fullWidth
-                        autoComplete="shipping address-level2"
-                    />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                    <TextField id="state" name="state" label="State/Province/Region" fullWidth />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                    <TextField
-                        required
-                        id="zip"
-                        name="zip"
-                        label="Zip / Postal code"
-                        fullWidth
-                        autoComplete="shipping postal-code"
-                    />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                    <TextField
-                        required
-                        id="country"
-                        name="country"
-                        label="Country"
-                        fullWidth
-                        autoComplete="shipping country"
-                    />
-                    </Grid>
-                    <Grid item xs={12}>
-                    <FormControlLabel
-                        control={<Checkbox color="secondary" name="saveAddress" value="yes" />}
-                        label="Use this address for payment details"
-                    />
+                
+                </Grid>
+                <Button
+                    
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    style = {{marginTop: 30, marginBottom: 20}}
+                    onClick = {this.toConfirmation}
+                >
+                    Submit
+                </Button>
+                <Grid container justify="flex-end">
+                    <Grid item>
+                    <Button color="primary"  style={{ display: 'flex', flexDirection: 'column', alignItems: 'left'}} onClick={this.toCategories}>Back</Button>
                     </Grid>
                 </Grid>
-                </React.Fragment>
+                </form>
+            </div>
+            <Box mt={5}>
+                <Copyright />
+            </Box>
+            </Container>
         }
-
-            // <div style={{display: 'flex', width: "100%", flexWrap: 'wrap', alignItems: "center", justifyContent: 'center', overflow: 'hidden', flexDirection: 'column'}}>
-            //     <h1 style={{marginBottom: 40}}>Enter donation options</h1>
-            //     <Form>
-            //         <Form.Group>
-            //             <Form.Label>What size charities would you like to support?</Form.Label>
-            //             <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-            //                 <Form.Label style={{fontSize: '14px', margin: 8, marginRight: 6}}>Small</Form.Label>
-            //                 <Form.Check
-            //                   checked={this.state.small}
-            //                   onChange={this.handleChangeSmall} />
-            //                 <Form.Label style={{fontSize: '14px', margin: 8, marginRight: 6}}>Medium</Form.Label>
-            //                 <Form.Check
-            //                   checked={this.state.medium}
-            //                   onChange={this.handleChangeMedium} />
-            //                 <Form.Label style={{fontSize: '14px', margin: 8, marginRight: 6}}>Large</Form.Label>
-            //                 <Form.Check
-            //                   checked={this.state.large}
-            //                   onChange={this.handleChangeLarge} />
-            //             </div>
-            //         </Form.Group>
-            //         <Form.Group>
-            //             <Form.Label>Would you like to focus on local issues?</Form.Label>
-            //             <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-            //                 <Form.Label style={{fontSize: '14px', margin: 8, marginRight: 6}}>Local</Form.Label>
-            //                 <Form.Check
-            //                   checked={this.state.local}
-            //                   onChange={this.handleChangeLocal} />
-            //                 <Form.Label style={{fontSize: '14px', margin: 8, marginRight: 6}}>Global</Form.Label>
-            //                 <Form.Check
-            //                   checked={this.state.global}
-            //                   onChange={this.handleChangeGlobal} />
-            //             </div>
-            //         </Form.Group>
-            //         <Form.Group>
-            //             <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}>
-            //                 <Form.Label>How much would you like to contribute each month?</Form.Label>
-            //                 <Form.Label style={{alignSelf: 'center', fontWeight: '500', fontSize: '20px'}}>${this.state.donationAmount}</Form.Label>
-            //             </div>
-            //             <RangeSlider
-            //               value={this.state.donationAmount}
-            //               onChange={e => this.setState({donationAmount: e.target.value})}
-            //               min={20}
-            //               max={100}
-            //             />
-            //         </Form.Group>
-            //     </Form>
-            //     <div style={{justifyContent: 'space-around', alignItems: 'center', marginTop: 20, marginBottom: 20}}>
-            //         <Button color="primary" style={{marginRight: 100}} onClick={this.toCategories}>Back</Button>
-            //         <Button color="primary" style={{marginLeft: 100}} onClick={this.toConfirmation}>Next</Button>
-            //   </div>
-            // </div>
         
 
         if (this.state.onConfirmation) {
