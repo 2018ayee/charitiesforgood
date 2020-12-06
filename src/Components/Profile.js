@@ -67,15 +67,6 @@ const useStyles = makeStyles((theme) => ({
 
 const top_cards = [0, 1, 2];
 const med_cards = [3, 4];
-
-const boxes = [
-    { title: 'TOTAL DONATED', desc: '$55.08' },
-    { title: 'TOTAL NUMBER OF CHARITIES', desc: '4' },
-    { title: '[something]', desc: '[something]' },
-    { title: 'CURRENT DONATION PLAN', desc: '$25.00 / month' },
-    { title: '[something else]', desc: '[something else]' },
-];
-
 const charities = [0, 1, 2, 3];
 
 
@@ -83,6 +74,13 @@ class Profile extends React.Component  {
     constructor(props){
         super(props);
         this.state = {
+            box_info: [
+                { title: 'TOTAL DONATED', desc: '$55.08' },
+                { title: 'TOTAL NUMBER OF CHARITIES', desc: '4' },
+                { title: '[something]', desc: '[something]' },
+                { title: 'CURRENT DONATION PLAN', desc: '$25.00 / month' },
+                { title: '[something else]', desc: '[something else]' },
+            ],
             userid: "",
             first_name: "",
         };
@@ -92,7 +90,7 @@ class Profile extends React.Component  {
     
     getFirstName(){
         firebase.auth().onAuthStateChanged((user) => {
-            if(user){
+            if (user){
                 this.setState({userid: user.uid}, () => {console.log(this.state.userid)});
             } else {
                 console.log("error");
@@ -112,13 +110,8 @@ class Profile extends React.Component  {
         this.getFirstName(this.state.userid);
     }
 
-    componentDidUpdate(){
-        
-    }
-
     render(){
         return (
-            
             <React.Fragment>
             <CssBaseline />
             <AppBar position="relative">
@@ -163,10 +156,10 @@ class Profile extends React.Component  {
                         <Card style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
                         <CardContent style={{flexGrow: 1}}>
                             <Typography gutterBottom variant="h5" component="h2" align='center'>
-                            {boxes[card].desc}
+                            {this.state.box_info[card].desc}
                             </Typography>
                             <Typography align='center'>
-                            {boxes[card].title}
+                            {this.state.box_info[card].title}
                             </Typography>
                         </CardContent>
                         </Card>
@@ -182,10 +175,10 @@ class Profile extends React.Component  {
                         />
                         <CardContent style={{flexGrow: 1}}>
                             <Typography gutterBottom variant="h5" component="h2">
-                            {boxes[card].desc}
+                            {this.state.box_info[card].desc}
                             </Typography>
                             <Typography>
-                            {boxes[card].title}
+                            {this.state.box_info[card].title}
                             </Typography>
                         </CardContent>
                         <CardActions>
