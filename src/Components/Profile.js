@@ -84,8 +84,10 @@ class Profile extends React.Component  {
             userid: "",
             first_name: "",
             last_name: "",
-            charities: [0, 1, 2, 3],
-            preferences: [""],
+            charities: [],
+            charity_titles: [],
+            preferences: [],
+            preferences_str: "",
         };
 
         this.readData = this.readData.bind(this);
@@ -107,6 +109,25 @@ class Profile extends React.Component  {
                     this.setState({last_name: doc.data().lastName.toLowerCase()}, () => {console.log(this.state.last_name)});
                     this.setState({charities: doc.data().charities}, () => {console.log(this.state.charities)});
                     this.setState({preferences: doc.data().preferences}, () => {console.log(this.state.preferences)});
+                }
+            });
+
+            let tempStr = "";
+            for(let k = 0; k < this.state.preferences.length; k++){
+                tempStr = tempStr + this.state.preferences[k] + ", ";
+            }
+            this.setState({preferences_str: tempStr}, () => {console.log(this.state.preferences_str)});
+        });
+        
+        firebase.firestore().collection("charities").get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                for(let i = 0; i < this.state.charities.length; i++){
+                    if (doc.id == this.state.charities[i].charityId){
+                        console.log(doc.data().name);
+                        let tempList = this.state.charity_titles.slice();
+                        tempList[i] = doc.data().name;
+                        this.setState({charity_titles: tempList});
+                    }
                 }
             });
         });
@@ -230,7 +251,7 @@ class Profile extends React.Component  {
                         />
                         <CardContent style={{flexGrow: 1}}>
                             <Typography gutterBottom variant="h5" component="h2">
-                            {this.state.box_info[card].desc}
+                            {card === 4 ? this.state.preferences_str : this.state.box_info[card].desc}
                             </Typography>
                             <Typography>
                             {this.state.box_info[card].title}
@@ -244,8 +265,8 @@ class Profile extends React.Component  {
                         </Card>
                     </Grid>
                     ))}
-                    {this.state.charities.map((card) => (
-                    <Grid item key={card} xs={12} sm={6} md={3}>
+                    {this.state.charity_titles.map((card) => (
+                    <Grid item xs={12} sm={6} md={3}>
                         <Card style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
                         <a href="/charityex">
                         <CardMedia
@@ -256,7 +277,7 @@ class Profile extends React.Component  {
                         </a>
                         <CardContent style={{flexGrow: 1}}>
                             <Typography gutterBottom variant="h5" component="h2">
-                            [charity title]
+                            {card}
                             </Typography>
                             <Typography>
                             [charity desc]
