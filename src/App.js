@@ -24,7 +24,7 @@ function App() {
   useEffect(() => {
     const db = firebase.firestore()
     setUser(db.collection("users").get())//get the specific user logged in and store in state
-
+  
   }, [])*/
    //       <Route path="/signUp" component = {() => <SignUp user={user}> </SignUp>} >
 
@@ -35,6 +35,7 @@ function App() {
       {/* A <Switch> looks through its children <Route>s and
           renders the first one that matches the current URL. */}
       <Switch>
+        <Route path="/" exact component = {HomeScreen}/>
         <Route path="/home" component = {HomeScreen}>
 
         </Route>
