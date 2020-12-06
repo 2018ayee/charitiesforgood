@@ -42,12 +42,12 @@ class Copyright extends React.Component {
 
 
 class SignUp extends React.Component  {
-    
+
 
     constructor(props) {
         super(props);
         // Don't call this.setState() here!
-        this.state = { 
+        this.state = {
             firstName: "",
             lastName: "",
             email: "",
@@ -63,7 +63,7 @@ class SignUp extends React.Component  {
         this.password = this.password.bind(this);
         this.email = this.email.bind(this);
     }
-    
+
     handleSubmit = (e) => {
         if (this.state.firstName === "" || this.state.lastName === "") {
             this.setState({ firstNameError: true, lastNameError: true, emailError: false, passwordError: false })
@@ -198,7 +198,6 @@ class SignUp extends React.Component  {
                     </Grid>
                 </Grid>
                 <Button
-                    
                     fullWidth
                     variant="contained"
                     color="primary"
