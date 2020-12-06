@@ -4,6 +4,7 @@ import firebase from 'firebase';
 import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen';
 import SignUp from "./Components/SignUp.js"
+import Charities from './Components/Charities';
 
 function App() {
   if (!firebase.apps.length) {
@@ -29,7 +30,10 @@ function App() {
           
         </Route>
         <Route path="/signUp" component = {SignUp}>
-    
+        
+        </Route>
+        <Route path="/charities" component = {Charities}>
+
         </Route>
         {/* <Route path="/">
           <Home /> */}
