@@ -1,6 +1,8 @@
 import React from 'react';
 import firebase from 'firebase';
 import ConfirmationScreen from "./ConfirmationScreen"
+import PaymentScreen from "./PaymentScreen"
+
 
 export default class SetupScreen extends React.Component{
     constructor(props) {
@@ -47,7 +49,7 @@ export default class SetupScreen extends React.Component{
 
         return(
             <div>
-                <ConfirmationScreen />
+                <PaymentScreen />
             </div>
         )
     }
