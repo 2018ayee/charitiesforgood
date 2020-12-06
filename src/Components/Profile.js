@@ -86,6 +86,7 @@ class Profile extends React.Component  {
             last_name: "",
             charities: [],
             charity_titles: [],
+            charity_descs: [],
             preferences: [],
             preferences_str: "",
         };
@@ -123,9 +124,14 @@ class Profile extends React.Component  {
             querySnapshot.forEach((doc) => {
                 for(let i = 0; i < this.state.charities.length; i++){
                     if (doc.id == this.state.charities[i].charityId){
-                        console.log(doc.data().name);
-                        let tempList = this.state.charity_titles.slice();
+                        /*let tempList = this.state.charity_titles.slice();
+                        let tempList2 = this.state.charity_descs.slice();
                         tempList[i] = doc.data().name;
+                        tempList2[i] = doc.data().description;
+                        this.setState({charity_titles: tempList});
+                        this.setState({charity_descs: tempList2});*/
+                        let tempList = this.state.charity_titles.slice();
+                        tempList[i] = { name: doc.data().name, desc: doc.data().description};
                         this.setState({charity_titles: tempList});
                     }
                 }
@@ -265,8 +271,17 @@ class Profile extends React.Component  {
                         </Card>
                     </Grid>
                     ))}
+                    <Grid item xs={12} sm={6} md={12}>
+                        <Card style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
+                        <CardContent style={{flexGrow: 1}}>
+                            <Typography gutterBottom variant="h5" component="h2" align='center'>
+                            INFORMATION ABOUT YOUR CHARITIES:
+                            </Typography>
+                        </CardContent>
+                        </Card>
+                    </Grid>
                     {this.state.charity_titles.map((card) => (
-                    <Grid item xs={12} sm={6} md={3}>
+                    <Grid item xs={12} sm={6} md={6}>
                         <Card style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
                         <a href="/charityex">
                         <CardMedia
@@ -277,10 +292,10 @@ class Profile extends React.Component  {
                         </a>
                         <CardContent style={{flexGrow: 1}}>
                             <Typography gutterBottom variant="h5" component="h2">
-                            {card}
+                            {card.name}
                             </Typography>
                             <Typography>
-                            [charity desc]
+                            {card.desc}
                             </Typography>
                         </CardContent>
                         </Card>
