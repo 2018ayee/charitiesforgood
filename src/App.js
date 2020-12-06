@@ -6,6 +6,7 @@ import SignUp from "./Components/SignUp.js";
 import SetupScreen from './screens/SetupScreen';
 import Charities from './Components/Charities';
 import Profile from  './Components/Profile'
+import CharityInfo from  './Components/CharityInfo'
 import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -36,7 +37,7 @@ function App() {
       {/* A <Switch> looks through its children <Route>s and
           renders the first one that matches the current URL. */}
       <Switch>
-        <Route path="/" exact component = {HomeScreen}/>
+        <Route path="/home" exact component = {HomeScreen}/>
     
         <Route path="/signUp" component = {SignUp}>
         
@@ -44,6 +45,9 @@ function App() {
         <Route path="/charities" component = {Charities}>
         </Route>
         <Route path="/profile" component = {Profile}>
+          
+        </Route>
+        <Route path="/charityex" component = {CharityInfo}>
           
         </Route>
         <Route path='/setup' component = {SetupScreen}/>
