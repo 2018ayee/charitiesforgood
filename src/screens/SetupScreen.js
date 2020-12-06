@@ -218,20 +218,25 @@ export default class SetupScreen extends React.Component{
                 c.push({charityId: r.id, value: valuePerCharity})
             })
 
-            await userRef.update({
+            const updatePromise = await userRef.update({
                 preferences: this.state.selectedCategories,
                 charities: c
             })
 
             
-            //this.setState({onFilters: false, onConfirmation: true})
+            this.setState({onFilters: false, onConfirmation: true})
         }
     }
 
     componentDidMount() {
-        if (firebase.auth().currentUser !== null) {
-            this.setState({userId: firebase.auth().currentUser.uid})
-        }
+        firebase.auth().onAuthStateChanged((user) => {
+          if (user) {
+            // User is signed in.
+            this.setState({userId: user.uid})
+          } else {
+            // No user is signed in.
+          }
+        });
     }
 
     render(){
