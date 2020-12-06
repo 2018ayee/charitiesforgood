@@ -12,13 +12,15 @@ import 'firebase/auth'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import RangeSlider from 'react-bootstrap-range-slider';
+import firebase from 'firebase';
+import ConfirmationScreen from "./ConfirmationScreen"
 
 export default class SetupScreen extends React.Component{
     constructor(props) {
         super(props);
         this.gridRef = React.createRef();
         this.state = {
-            onCategories: true,
+            onCategories: false,
             onFilters: false,
             onConfirmation: false,
             onPayment: false,
@@ -240,7 +242,7 @@ export default class SetupScreen extends React.Component{
         if (this.state.onPayment) {
             paymentScreen =
             <div>
-                Payment screen
+                <ConfirmationScreen />
             </div>
         }
 
@@ -252,5 +254,5 @@ export default class SetupScreen extends React.Component{
                 {paymentScreen}
             </div>
         )
-    } 
+    }
 }
