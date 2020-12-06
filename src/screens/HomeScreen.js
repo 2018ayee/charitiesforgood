@@ -9,7 +9,7 @@ import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
-// import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { BrowserRouter } from 'react-router-dom';
@@ -19,9 +19,9 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
+      {/* <Link color="inherit" href="https://material-ui.com/"> */}
+        Charitable
+      {' '}
       {new Date().getFullYear()}
       {'.'}
     </Typography>
@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
   },
   image: {
     backgroundImage: 'url(https://source.unsplash.com/random)',
-    backgroundRepeat: 'no-repeat',
     backgroundColor:
       theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
     backgroundSize: 'cover',
@@ -70,7 +69,7 @@ export default function SignInSide() {
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
-            {/* <LockOutlinedIcon /> */}
+            <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
