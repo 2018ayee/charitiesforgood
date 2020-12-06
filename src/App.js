@@ -6,6 +6,7 @@ import SetupScreen from './screens/SetupScreen';
 import SignUp from "./Components/SignUp.js"
 import Charities from './Components/Charities';
 import Profile from './Components/Profile';
+import Dashboard from './Components/Dashboard Template/Dashboard';
 
 function App() {
   if (!firebase.apps.length) {
@@ -44,6 +45,9 @@ function App() {
         <Route path="/charities" component = {Charities}>
         </Route>
         <Route path="/profile" component = {Profile}>
+    
+        </Route>
+        <Route path="/myportfolio" component = {Dashboard}>
     
         </Route>
 
