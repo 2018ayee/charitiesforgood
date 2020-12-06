@@ -1,10 +1,12 @@
 import './App.css';
-import ProfileHome from './Components/ProfileHome';
 import firebase from 'firebase';
 import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
-import HomeScreen from './screens/HomeScreen.js';
+import HomeScreen from './screens/HomeScreen';
+import SetupScreen from './screens/SetupScreen';
+
 import SignUp from "./Components/SignUp.js"
 import Charities from './Components/Charities';
+import Profile from './Components/Profile';
 
 function App() {
   if (!firebase.apps.length) {
@@ -30,8 +32,6 @@ function App() {
 
     <Router>
     <div>
-
-
       {/* A <Switch> looks through its children <Route>s and
           renders the first one that matches the current URL. */}
       <Switch>
@@ -42,6 +42,9 @@ function App() {
         
         </Route>
         <Route path="/charities" component = {Charities}>
+        </Route>
+        <Route path="/profile" component = {Profile}>
+    
         </Route>
         {/* <Route path="/">
           <Home /> */}
