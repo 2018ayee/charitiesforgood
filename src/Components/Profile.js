@@ -78,9 +78,9 @@ class Profile extends React.Component  {
         super(props);
         this.state = {
             box_info: [
-                { title: 'TOTAL NUMBER OF CHARITIES', desc: '4' },
-                { title: 'TOTAL DONATED', desc: '$55.08' },
-                { title: 'MONTHS OF GIVING', desc: '8' },
+                { title: 'TOTAL NUMBER OF CHARITIES', desc: '5' },
+                { title: 'TOTAL DONATED', desc: '$25.00' },
+                { title: 'MONTHS OF GIVING', desc: '1' },
                 { title: 'CURRENT DONATION PLAN', desc: '$25.00 / month' },
                 { title: 'YOUR CHARITIES', desc: 'Animals, Health' },
             ],
