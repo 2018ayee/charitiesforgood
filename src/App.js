@@ -3,7 +3,6 @@ import firebase from 'firebase';
 import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen';
 import SetupScreen from './screens/SetupScreen';
-
 import SignUp from "./Components/SignUp.js"
 import Charities from './Components/Charities';
 import Profile from './Components/Profile';
