@@ -15,6 +15,8 @@ import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
+import firebase from 'firebase';
+import 'firebase/firestore';
 
 function Copyright() {
   return (
@@ -88,6 +90,7 @@ const tiers = [
     // price: '15',
     description: [
       'Size: [size]',
+      'Total revenue: [tot_rev]',
       'Headquarters: [state]',
       'Motto: [motto]',
     ],
@@ -125,113 +128,169 @@ const footers = [
   },
 ];
 
-export default function CharityInfo() {
-  const classes = useStyles();
+// const classes = useStyles();
 
-  return (
-    <React.Fragment>
-      <CssBaseline />
-      <AppBar position="static" color="default" elevation={0} className={classes.appBar}>
-        <Toolbar className={classes.toolbar}>
-          <CameraIcon className={classes.icon} />
-          <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
-            Charitable
+class CharityInfo extends React.component {
+
+  constructor(props) {
+    super(props);
+    // Don't call this.setState() here!
+    this.state = { 
+        admin_exp_p: 0,
+        category: "",
+        description: "",
+        ein: "",
+        fund_eff: 0,
+        fund_exp_p: 0,
+        leader_comp: 0,
+        motto: "",
+        name: "",
+        program_exp_p: 0,
+        size: "",
+        state: "",
+        subcategory: "",
+        tot_rev: ""
+    };
+    this.getadmin_exp_p = this.getadmin_exp_p.bind(this);
+    this.getcategory = this.getcategory.bind(this);
+    this.getdescription = this.getdescription.bind(this);
+    this.getein = this.getein.bind(this);
+    this.getfund_eff = this.getfund_eff.bind(this);
+    this.getfund_exp_p = this.getfund_exp_p.bind(this);
+    this.getleader_comp = this.getleader_comp.bind(this);
+    this.getmotto = this.getmotto.bind(this);
+    this.getname = this.getname.bind(this);
+    this.getprogram_exp_p = this.getprogram_exp_p.bind(this);
+    this.getsize = this.getsize.bind(this);
+    this.getstate = this.getstate.bind(this);
+    this.getsubcategory = this.getsubcategory.bind(this);
+    this.gettot_rev = this.gettot_rev.bind(this);
+  }
+
+  getadmin_exp_p(id) {
+      this.setState({firstName: e.target.value});
+  }
+
+  lastName(e) {
+      this.setState({lastName: e.target.value});
+  }
+
+  password(e){
+      this.setState({password: e.target.value});
+  }
+
+  email(e){
+      this.setState({email: e.target.value});
+  }
+
+  render(){
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <AppBar position="static" color="default" elevation={0} className={classes.appBar}>
+          <Toolbar className={classes.toolbar}>
+            <CameraIcon className={classes.icon} />
+            <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
+              Charitable
+            </Typography>
+            <nav>
+              <Link variant="button" color="textPrimary" href="#" className={classes.link}>
+                Return to My Profile
+              </Link>
+              {/* <Link variant="button" color="textPrimary" href="#" className={classes.link}>
+                Enterprise
+              </Link> */}
+              {/* <Link variant="button" color="textPrimary" href="#" className={classes.link}>
+                Support
+              </Link> */}
+            </nav>
+            <Button href="#" color="primary" variant="outlined" className={classes.link}>
+              Logout
+            </Button>
+          </Toolbar>
+        </AppBar>
+        {/* Hero unit */}
+        <Container maxWidth="sm" component="main" className={classes.heroContent}>
+          <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
+            [Charity Name]
           </Typography>
-          <nav>
-            <Link variant="button" color="textPrimary" href="#" className={classes.link}>
-              Return to My Profile
-            </Link>
-            {/* <Link variant="button" color="textPrimary" href="#" className={classes.link}>
-              Enterprise
-            </Link> */}
-            {/* <Link variant="button" color="textPrimary" href="#" className={classes.link}>
-              Support
-            </Link> */}
-          </nav>
-          <Button href="#" color="primary" variant="outlined" className={classes.link}>
-            Logout
-          </Button>
-        </Toolbar>
-      </AppBar>
-      {/* Hero unit */}
-      <Container maxWidth="sm" component="main" className={classes.heroContent}>
-        <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-          [Charity Name]
-        </Typography>
-        <Typography variant="h5" align="center" color="textSecondary" component="p">
-          <i>[Categories]</i>
-        </Typography>
-        <Typography variant="h5" align="center" color="textSecondary" component="p">
-          [Description.]
-        </Typography>
-      </Container>
-      {/* End hero unit */}
-      <Container maxWidth="md" component="main">
-        <Grid container spacing={5} alignItems="flex-end">
-          {tiers.map((tier) => (
-            // Enterprise card is full width at sm breakpoint
-            <Grid item key={tier.title} xs={12} sm={tier.title === 'Enterprise' ? 12 : 6} md={4}>
-              <Card>
-                <CardHeader
-                  title={tier.title}
-                  subheader={tier.subheader}
-                  titleTypographyProps={{ align: 'center' }}
-                  subheaderTypographyProps={{ align: 'center' }}
-                  action={tier.title === 'Pro' ? <StarIcon /> : null}
-                  className={classes.cardHeader}
-                />
-                <CardContent>
-                  <div className={classes.cardPricing}>
-                    <Typography component="h2" variant="h3" color="textPrimary">
-                      {tier.price}
-                    </Typography>
-                    {/* <Typography variant="h6" color="textSecondary">
-                      /mo
-                    </Typography> */}
-                  </div>
-                  <ul>
-                    {tier.description.map((line) => (
-                      <Typography component="li" variant="subtitle1" align="center" key={line}>
-                        {line}
+          <Typography variant="h5" align="center" color="textSecondary" component="p">
+            <i>[Categories]</i>
+          </Typography>
+          <Typography variant="h5" align="center" color="textSecondary" component="p">
+            [Description.]
+          </Typography>
+        </Container>
+        {/* End hero unit */}
+        <Container maxWidth="md" component="main">
+          <Grid container spacing={5} alignItems="flex-end">
+            {tiers.map((tier) => (
+              // Enterprise card is full width at sm breakpoint
+              <Grid item key={tier.title} xs={12} sm={tier.title === 'Enterprise' ? 12 : 6} md={4}>
+                <Card>
+                  <CardHeader
+                    title={tier.title}
+                    subheader={tier.subheader}
+                    titleTypographyProps={{ align: 'center' }}
+                    subheaderTypographyProps={{ align: 'center' }}
+                    action={tier.title === 'Pro' ? <StarIcon /> : null}
+                    className={classes.cardHeader}
+                  />
+                  <CardContent>
+                    <div className={classes.cardPricing}>
+                      <Typography component="h2" variant="h3" color="textPrimary">
+                        {tier.price}
                       </Typography>
-                    ))}
-                  </ul>
-                </CardContent>
-                <CardActions>
-                  <Button fullWidth variant={tier.buttonVariant} color="primary">
-                    {tier.buttonText}
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
-      {/* Footer */}
-      <Container maxWidth="md" component="footer" className={classes.footer}>
-        <Grid container spacing={4} justify="space-evenly">
-          {footers.map((footer) => (
-            <Grid item xs={6} sm={3} key={footer.title}>
-              <Typography variant="h6" color="textPrimary" gutterBottom>
-                {footer.title}
-              </Typography>
-              <ul>
-                {footer.description.map((item) => (
-                  <li key={item}>
-                    <Link href="#" variant="subtitle1" color="textSecondary">
-                      {item}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </Grid>
-          ))}
-        </Grid>
-        <Box mt={5}>
-          <Copyright />
-        </Box>
-      </Container>
-      {/* End footer */}
-    </React.Fragment>
-  );
+                      {/* <Typography variant="h6" color="textSecondary">
+                        /mo
+                      </Typography> */}
+                    </div>
+                    <ul>
+                      {tier.description.map((line) => (
+                        <Typography component="li" variant="subtitle1" align="center" key={line}>
+                          {line}
+                        </Typography>
+                      ))}
+                    </ul>
+                  </CardContent>
+                  <CardActions>
+                    <Button fullWidth variant={tier.buttonVariant} color="primary">
+                      {tier.buttonText}
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+        {/* Footer */}
+        <Container maxWidth="md" component="footer" className={classes.footer}>
+          <Grid container spacing={4} justify="space-evenly">
+            {footers.map((footer) => (
+              <Grid item xs={6} sm={3} key={footer.title}>
+                <Typography variant="h6" color="textPrimary" gutterBottom>
+                  {footer.title}
+                </Typography>
+                <ul>
+                  {footer.description.map((item) => (
+                    <li key={item}>
+                      <Link href="#" variant="subtitle1" color="textSecondary">
+                        {item}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </Grid>
+            ))}
+          </Grid>
+          <Box mt={5}>
+            <Copyright />
+          </Box>
+        </Container>
+        {/* End footer */}
+      </React.Fragment>
+    );
+  }
 }
+
+export default CharityInfo;
