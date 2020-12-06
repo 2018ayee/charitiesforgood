@@ -64,7 +64,8 @@ class SignUp extends React.Component  {
         const db = firebase.firestore();
         firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
             .then((user) => {
-                 db.collection("users").add({
+                console.log(user)
+                 db.collection("users").doc(user.user.uid).set({
                     firstName: this.state.firstName,
                     lastName: this.state.lastName,
                     email: this.state.email,
@@ -73,7 +74,7 @@ class SignUp extends React.Component  {
                 })
                 .then(function() {
                     console.log("Document successfully written!");
-                    window.location.href = '/setup'
+                    //window.location.href = '/setup'
                 })
                 .catch(function(error) {
                     console.error("Error writing document: ", error);

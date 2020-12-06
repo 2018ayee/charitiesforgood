@@ -18,6 +18,7 @@ export default class SetupScreen extends React.Component{
         super(props);
         this.gridRef = React.createRef();
         this.state = {
+            userId: "jqc0xSYXMjg0wabiqmsN",
             onCategories: true,
             onFilters: false,
             onConfirmation: false,
@@ -133,7 +134,7 @@ export default class SetupScreen extends React.Component{
         this.setState({onCategories: true, onFilters: false})
     }
 
-    toConfirmation = () => {
+    toConfirmation = async() => {
         if (!this.state.small && !this.state.medium && !this.state.large) {
             alert("You must select at least one size of charity")
         }
@@ -141,28 +142,68 @@ export default class SetupScreen extends React.Component{
             alert("You must select locality of charity")
         }
         else {
-            var sizes = []
+            const db = firebase.firestore();
+            var charitiesRef = db.collection("charities");
+            var query = charitiesRef.where('category', 'in', this.state.selectedCategories)
+            var results = []
+
             if (this.state.small) {
-                sizes.push("small")
+                var query2 = query.where('size', '==', 'small')
+                await query2.get().then(function(querySnapshot) {
+                    querySnapshot.forEach(function(doc) {
+                        let data = doc.data()
+                        data.id = doc.id
+                        results.push(data)
+                    })
+                })
             }
 
             if (this.state.medium) {
-                sizes.push("medium")
+                var query2 = query.where('size', '==', 'mid')
+                await query2.get().then(function(querySnapshot) {
+                    querySnapshot.forEach(function(doc) {
+                        let data = doc.data()
+                        data.id = doc.id
+                        results.push(data)
+                    })
+                })
             }
 
             if (this.state.large) {
-                sizes.push("large")
+                var query2 = query.where('size', '==', 'big')
+                await query2.get().then(function(querySnapshot) {
+                    querySnapshot.forEach(function(doc) {
+                        let data = doc.data()
+                        data.id = doc.id
+                        results.push(data)
+                    })
+                })
             }
+            results = results.slice(0, 5)
+            console.log(results)
+            console.log(this.state.userId)
+            
+            var userRef = db.collection("users").doc(this.state.userId);
+            let c = []
+            let valuePerCharity = this.state.donationAmount / results.length
+            results.forEach(r => {
+                c.push({charityId: r.id, value: valuePerCharity})
+            })
 
-            const db = firebase.firestore();
-            var charitiesRef = db.collection("charities");
-            //var query = charitiesRef.where('size', 'in', sizes).where('category', 'in', this.state.selectedCategories)
-            this.setState({onFilters: false, onConfirmation: true})
+            await userRef.update({
+                preferences: this.state.selectedCategories,
+                charities: c
+            })
+
+            
+            //this.setState({onFilters: false, onConfirmation: true})
         }
     }
 
     componentDidMount() {
-
+        if (firebase.auth().currentUser !== null) {
+            this.setState({userId: firebase.auth().currentUser.uid})
+        }
     }
 
     render(){
