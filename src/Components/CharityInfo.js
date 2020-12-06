@@ -35,7 +35,10 @@ const tiers = [
   {
     title: 'Expenses',
     // price: '0',
-    description: ['Program: [program_exp]', 'Administration: [admin_exp]', 'Fundraising: [fund_exp]'],
+    description: [
+      'Program: [program_exp]', 
+      'Administration: ' + this.state.admin_exp_p.toString(),
+      'Fundraising: [fund_exp]'],
     buttonText: 'Finances',
     buttonVariant: 'outlined',
   },
