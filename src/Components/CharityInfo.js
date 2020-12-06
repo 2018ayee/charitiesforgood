@@ -31,42 +31,6 @@ function Copyright() {
   );
 }
 
-const tiers = [
-  {
-    title: 'Expenses',
-    // price: '0',
-    description: [
-      'Program: [program_exp]', 
-      // 'Administration: ' + this.state.admin_exp_p.toString(),
-      'Fundraising: [fund_exp]'],
-    buttonText: 'Finances',
-    buttonVariant: 'outlined',
-  },
-  {
-    title: 'The Essentials',
-    // subheader: 'about us',
-    // price: '15',
-    description: [
-      'Size: [size]',
-      'Total revenue: [tot_rev]',
-      'Headquarters: [state]',
-      'Motto: [motto]',
-    ],
-    buttonText: 'Website',
-    buttonVariant: 'contained',
-  },
-  {
-    title: 'Details',
-    // price: '30',
-    description: [
-      'Fundraising efficiency: [fund_eff]',
-      'Leader compensation: [leader_comp]',
-      'EIN: [ein]',
-    ],
-    buttonText: 'Donate',
-    buttonVariant: 'outlined',
-  },
-];
 const footers = [
   {
     title: 'Company',
