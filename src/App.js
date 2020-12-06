@@ -5,6 +5,8 @@ import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-ro
 import HomeScreen from './screens/HomeScreen';
 import SignUp from "./Components/SignUp.js";
 import SetupScreen from './screens/SetupScreen';
+import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   if (!firebase.apps.length) {

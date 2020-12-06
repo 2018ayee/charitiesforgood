@@ -9,6 +9,9 @@ import InfoIcon from '@material-ui/icons/Info';
 import arts from '../img/arts.jpg'
 import firebase from 'firebase/app'
 import 'firebase/auth'
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import RangeSlider from 'react-bootstrap-range-slider';
 
 export default class SetupScreen extends React.Component{
     constructor(props) {
@@ -65,7 +68,13 @@ export default class SetupScreen extends React.Component{
                     img: "https://ideas.ted.com/wp-content/uploads/sites/3/2020/03/final_credit-alamy-1.jpg",
                 }
             ],
-            selectedCategories: []
+            selectedCategories: [],
+            donationAmount: 20,
+            small: true,
+            medium: true,
+            large: true,
+            local: true,
+            global: true,
         };
     }
 
@@ -91,8 +100,53 @@ export default class SetupScreen extends React.Component{
         this.setState({ selectedCategories: selectedCategories })
     }
 
+    handleChangeSmall = () => {
+        this.setState({small: !this.state.small})
+    }
+
+    handleChangeMedium = () => {
+        this.setState({medium: !this.state.medium})
+    }
+
+    handleChangeLarge = ()=> {
+        this.setState({large: !this.state.large})
+    }
+
+    handleChangeLocal= () => {
+        this.setState({local: !this.state.local})
+    }
+
+    handleChangeGlobal = ()=> {
+        this.setState({global: !this.state.global})
+    }
+
+    toFilters = () => {
+        if (this.state.selectedCategories.length == 0) {
+            alert('You must select at least one category')
+        }
+        else {
+            this.setState({onCategories: false, onFilters: true})
+        }
+    }
+
+    toCategories = () => {
+        this.setState({onCategories: true, onFilters: false})
+    }
+
+    toConfirmation = () => {
+        if (!this.state.small && !this.state.medium && !this.state.large) {
+            alert("You must select at least one size of charity")
+        }
+        else if (!this.state.local && !this.state.global) {
+            alert("You must select locality of charity")
+        }
+        else {
+            this.setState({onFilters: false, onConfirmation: true})
+        }
+    }
+
     componentDidMount() {
-        
+
     }
 
     render(){
@@ -103,8 +157,8 @@ export default class SetupScreen extends React.Component{
 
         if (this.state.onCategories) {
             categoryScreen = 
-            <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around', overflow: 'hidden'}}>
-              <h1>Select your interests below</h1>
+            <div style={{display: 'flex', width: "100%", flexWrap: 'wrap', alignItems: "center", justifyContent: 'center', overflow: 'hidden', flexDirection: 'column'}}>
+              <h1 style={{marginBottom: 40}}>Select your interests below</h1>
               <GridList cellHeight={180} style={{width: "80%"}} cols={4} ref={this.gridRef}>
                 {this.state.categories.map((category) => (
                   <GridListTile key={category.name} id={category.name} onClick={() => this.addCharity(category)}>
@@ -115,19 +169,79 @@ export default class SetupScreen extends React.Component{
                   </GridListTile>
                 ))}
               </GridList>
+              <div style={{justifyContent: 'space-around', alignItems: 'center', marginTop: 20}}>
+                  <Button variant="outline-primary" onClick={this.toFilters}>Next</Button>
+              </div>
             </div>
         }
 
-        else if (this.state.filterScreen) {
-
+        if (this.state.onFilters) {
+            filterScreen = 
+            <div style={{display: 'flex', width: "100%", flexWrap: 'wrap', alignItems: "center", justifyContent: 'center', overflow: 'hidden', flexDirection: 'column'}}>
+                <h1 style={{marginBottom: 40}}>Enter donation options</h1>
+                <Form>
+                    <Form.Group>
+                        <Form.Label>What size charities would you like to support?</Form.Label>
+                        <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                            <Form.Label style={{fontSize: '14px', margin: 8, marginRight: 6}}>Small</Form.Label>
+                            <Form.Check
+                              checked={this.state.small}
+                              onChange={this.handleChangeSmall} />
+                            <Form.Label style={{fontSize: '14px', margin: 8, marginRight: 6}}>Medium</Form.Label>
+                            <Form.Check
+                              checked={this.state.medium}
+                              onChange={this.handleChangeMedium} />
+                            <Form.Label style={{fontSize: '14px', margin: 8, marginRight: 6}}>Large</Form.Label>
+                            <Form.Check
+                              checked={this.state.large}
+                              onChange={this.handleChangeLarge} />
+                        </div>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Would you like to focus on local issues?</Form.Label>
+                        <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                            <Form.Label style={{fontSize: '14px', margin: 8, marginRight: 6}}>Local</Form.Label>
+                            <Form.Check
+                              checked={this.state.local}
+                              onChange={this.handleChangeLocal} />
+                            <Form.Label style={{fontSize: '14px', margin: 8, marginRight: 6}}>Global</Form.Label>
+                            <Form.Check
+                              checked={this.state.global}
+                              onChange={this.handleChangeGlobal} />
+                        </div>
+                    </Form.Group>
+                    <Form.Group>
+                        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}>
+                            <Form.Label>How much would you like to contribute each month?</Form.Label>
+                            <Form.Label style={{alignSelf: 'center', fontWeight: '500', fontSize: '20px'}}>${this.state.donationAmount}</Form.Label>
+                        </div>
+                        <RangeSlider
+                          value={this.state.donationAmount}
+                          onChange={e => this.setState({donationAmount: e.target.value})}
+                          min={20}
+                          max={100}
+                        />
+                    </Form.Group>
+                </Form>
+                <div style={{justifyContent: 'space-around', alignItems: 'center', marginTop: 20, marginBottom: 20}}>
+                    <Button variant="outline-primary" style={{marginRight: 100}} onClick={this.toCategories}>Back</Button>
+                    <Button variant="outline-primary" style={{marginLeft: 100}} onClick={this.toConfirmation}>Next</Button>
+              </div>
+            </div>
         }
 
-        else if (this.confirmationScreen) {
-
+        if (this.state.onConfirmation) {
+            confirmationScreen=
+            <div>
+                Confirmation screen
+            </div>
         }
 
-        else {
-
+        if (this.state.onPayment) {
+            paymentScreen =
+            <div>
+                Payment screen
+            </div>
         }
 
         return(
