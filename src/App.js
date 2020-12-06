@@ -2,7 +2,7 @@ import './App.css';
 import ProfileHome from './Components/ProfileHome';
 import firebase from 'firebase';
 import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
-import HomeScreen from './screens/HomeScreen';
+import HomeScreen from './screens/HomeScreen.js';
 import SignUp from "./Components/SignUp.js"
 
 function App() {
@@ -29,11 +29,9 @@ function App() {
           
         </Route>
         <Route path="/signUp" component = {SignUp}>
-    
+
         </Route>
-        {/* <Route path="/">
-          <Home /> */}
-        {/* </Route> */}
+        
       </Switch>
     </div>
   </Router>
