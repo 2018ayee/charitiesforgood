@@ -68,6 +68,7 @@ const useStyles = makeStyles((theme) => ({
 
 const top_cards = [0, 1, 2];
 const med_cards = [3, 4];
+const num = [0,1,2,3,4];
 
 
 class Profile extends React.Component  {
@@ -84,14 +85,17 @@ class Profile extends React.Component  {
             userid: "",
             first_name: "",
             last_name: "",
-            charities: [0, 1, 2, 3],
+            charities: [],
             preferences: [""],
+            display: []
         };
 
         this.readData = this.readData.bind(this);
     }
     
     readData(){
+        var charities = []
+        var display = []
         firebase.auth().onAuthStateChanged((user) => {
             if (user){
                 this.setState({userid: user.uid}, () => {console.log(this.state.userid)});
@@ -110,6 +114,20 @@ class Profile extends React.Component  {
                 }
             });
         });
+        firebase.firestore().collection("charities").get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                this.state.charities.forEach((charity) => {
+                    if (doc.id === charity.charityId){
+                        var joined = this.state.display.concat([doc.data().name, doc.data().description]);
+                        this.setState({display: joined});
+                        console.log(this.state.display);
+                    }
+                    
+                });
+            });
+        });
+        
+        
     }
 
     componentDidMount(){
@@ -244,7 +262,7 @@ class Profile extends React.Component  {
                         </Card>
                     </Grid>
                     ))}
-                    {this.state.charities.map((card) => (
+                    {num.map((card) => (
                     <Grid item key={card} xs={12} sm={6} md={3}>
                         <Card style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
                         <a href="/charityex">
@@ -256,10 +274,10 @@ class Profile extends React.Component  {
                         </a>
                         <CardContent style={{flexGrow: 1}}>
                             <Typography gutterBottom variant="h5" component="h2">
-                            [charity title]
+                            {this.state.display[card*2]}
                             </Typography>
                             <Typography>
-                            [charity desc]
+                            {this.state.display[card*2+1]}
                             </Typography>
                         </CardContent>
                         </Card>

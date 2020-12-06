@@ -218,13 +218,13 @@ export default class SetupScreen extends React.Component{
                 c.push({charityId: r.id, value: valuePerCharity})
             })
 
-            await userRef.update({
+            const updateProfmise = await userRef.update({
                 preferences: this.state.selectedCategories,
                 charities: c
             })
-
+            this.props.history.push('/profile')
             
-            //this.setState({onFilters: false, onConfirmation: true})
+            // this.setState({onFilters: false, onConfirmation: true})
         }
     }
 
@@ -237,8 +237,8 @@ export default class SetupScreen extends React.Component{
     render(){
         let categoryScreen;
         let filterScreen;
-        let confirmationScreen;
-        let paymentScreen;
+        // let confirmationScreen;
+        // let paymentScreen;
 
         if (this.state.onCategories) {
             categoryScreen = 
@@ -349,26 +349,26 @@ export default class SetupScreen extends React.Component{
         }
         
 
-        if (this.state.onConfirmation) {
-            confirmationScreen=
-            <div>
-                Confirmation screen
-            </div>
-        }
+        // if (this.state.onConfirmation) {
+        //     confirmationScreen=
+        //     <div>
+        //         Confirmation screen
+        //     </div>
+        // }
 
-        if (this.state.onPayment) {
-            paymentScreen =
-            <div>
-                <ConfirmationScreen />
-            </div>
-        }
+        // if (this.state.onPayment) {
+        //     paymentScreen =
+        //     <div>
+        //         <ConfirmationScreen />
+        //     </div>
+        // }
 
         return(
             <div>
                 {categoryScreen}
                 {filterScreen}
-                {confirmationScreen}
-                {paymentScreen}
+                {/* {confirmationScreen}
+                {paymentScreen} */}
             </div>
         )
     }
