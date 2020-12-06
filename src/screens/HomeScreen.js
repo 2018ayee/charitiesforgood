@@ -13,122 +13,131 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { BrowserRouter } from 'react-router-dom';
+import { classes } from "../App.css"
+import firebase from 'firebase/app';
+import "firebase/auth";
 
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      {/* <Link color="inherit" href="https://material-ui.com/"> */}
-        Charitable
-      {' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
+class Copyright extends React.Component {
+    render(){
+        return (
+            <Typography variant="body2" color="textSecondary" align="center">
+            {'Copyright © '}
+            
+                Charitable
+            {' '}
+            {new Date().getFullYear()}
+            {'.'}
+            </Typography>
+        );
+    }
 }
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: '100vh',
-  },
-  image: {
-    backgroundImage: 'url(https://source.unsplash.com/random)',
-    backgroundColor:
-      theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  },
-  paper: {
-    margin: theme.spacing(8, 4),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
 
-export default function SignInSide() {
-  const classes = useStyles();
+class HomeScreen extends React.Component {
+    constructor(props) {
+        super(props);
+        // Don't call this.setState() here!
+        this.state = { 
+            email: "",
+            password: ""
+        };
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.password = this.password.bind(this);
+        this.email = this.email.bind(this);
+    }
+    
+    handleSubmit(e) {
+        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+        .then((user) => {
+            console.log("Signed In!")
+        })
+        .catch((error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log("wrong")
+        });
+    }
 
-  return (
-    // <BrowserRouter>
-    <Grid container component="main" className={classes.root}>
-      <CssBaseline />
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <form className={classes.form} noValidate>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="/signUp" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
+    password(e){
+        this.setState({password: e.target.value});
+    }
+
+    email(e){
+        this.setState({email: e.target.value});
+    }
+
+    render() {
+        return (
+            <Grid container component="main" style = {{"height": "100vh"}}>
+            <CssBaseline />
+            <Grid item xs={false} sm={4} md={7} style = {{"backgroundSize": "cover", "backgroundPosition": "center", "backgroundImage": 'url(https://source.unsplash.com/random)'}}/>
+            <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                <div style = {{"display": "flex","flexDirection": "column", "alignItems":"center", "marginLeft": 80, "marginRight": 40}}>
+                <Avatar style = {{"margin": 10, "marginTop": 100}}>
+                    <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                    Sign in
+                </Typography>
+                <form style = {{"width": "100%", "marginTop": 10}} noValidate>
+                    <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="email"
+                    label="Email Address"
+                    name="email"
+                    autoComplete="email"
+                    onChange = {this.email}
+                    autoFocus
+                    />
+                    <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
+                    onChange = {this.password}
+                    />
+                    <FormControlLabel
+                    control={<Checkbox value="remember" color="primary" />}
+                    label="Remember me"
+                    />
+                    <Button
+                    onClick = {this.handleSubmit}
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    style = {{marginTop: 30, marginBottom: 20}}
+                    >
+                    Sign In
+                    </Button>
+                    <Grid container>
+                    <Grid item xs>
+                        <Link href="#" variant="body2">
+                        Forgot password?
+                        </Link>
+                    </Grid>
+                    <Grid item>
+                        <Link href="/signUp" variant="body2">
+                        {"Don't have an account? Sign Up"}
+                        </Link>
+                    </Grid>
+                    </Grid>
+                    <Box mt={5}>
+                    <Copyright />
+                    </Box>
+                </form>
+                </div>
             </Grid>
-            <Box mt={5}>
-              <Copyright />
-            </Box>
-          </form>
-        </div>
-      </Grid>
-    </Grid>
-    // </BrowserRouter>
-  );
+            </Grid>
+        );
+    }
 }
+
+export default HomeScreen;
