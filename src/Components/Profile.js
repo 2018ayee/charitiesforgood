@@ -20,8 +20,8 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+      <Link color="inherit" href="/profile">
+        CHARITABLE
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -83,12 +83,13 @@ class Profile extends React.Component  {
             ],
             userid: "",
             first_name: "",
+            last_name: "",
         };
 
-        this.getFirstName = this.getFirstName.bind(this);
+        this.readData = this.readData.bind(this);
     }
     
-    getFirstName(){
+    readData(){
         firebase.auth().onAuthStateChanged((user) => {
             if (user){
                 this.setState({userid: user.uid}, () => {console.log(this.state.userid)});
@@ -100,14 +101,15 @@ class Profile extends React.Component  {
         firebase.firestore().collection("users").get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 if (doc.id === this.state.userid){
-                    this.setState({first_name: doc.data().firstName}, () => {console.log(this.state.first_name)});
+                    this.setState({first_name: doc.data().firstName.toLowerCase()}, () => {console.log(this.state.first_name)});
+                    this.setState({last_name: doc.data().lastName.toLowerCase()}, () => {console.log(this.state.last_name)});
                 }
             });
         });
     }
 
     componentDidMount(){
-        this.getFirstName(this.state.userid);
+        this.readData(this.state.userid);
     }
 
     render(){
@@ -116,7 +118,7 @@ class Profile extends React.Component  {
             <CssBaseline />
             <AppBar position="relative">
                 <Toolbar>
-                <CameraIcon style={{maaringRight: 20}}/>
+                <CameraIcon style={{marginRight: 20}}/>
                 <Typography variant="h6" color="inherit" noWrap>
                     CHARITABLE
                 </Typography>
@@ -127,10 +129,10 @@ class Profile extends React.Component  {
                 <div style={{paddingTop: 80, paddingBottom: 60}}>
                 <Container maxWidth="sm">
                     <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-                    Hi, {this.state.first_name}
+                    Hi, {this.state.first_name.charAt(0).toUpperCase() + this.state.first_name.slice(1).toLowerCase()}
                     </Typography>
                     <Typography variant="h5" align="center" color="textSecondary" paragraph>
-                    [description of something]
+                    Welcome to the Charitable home page! Here, you can see all your important information and stuff... [CHANGE LATER]
                     </Typography>
                     <div style={{marginTop: 40}}>
                     <Grid container spacing={2} justify="center">
@@ -192,11 +194,13 @@ class Profile extends React.Component  {
                     {charities.map((card) => (
                     <Grid item key={card} xs={12} sm={6} md={3}>
                         <Card style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
+                        <a href="/charityex">
                         <CardMedia
                             style={{paddingTop: '56.25%'}}
                             image="https://source.unsplash.com/random"
                             title="Image title"
                         />
+                        </a>
                         <CardContent style={{flexGrow: 1}}>
                             <Typography gutterBottom variant="h5" component="h2">
                             [charity title]
@@ -205,14 +209,6 @@ class Profile extends React.Component  {
                             [charity desc]
                             </Typography>
                         </CardContent>
-                        <CardActions>
-                            <Button size="small" color="primary">
-                            View
-                            </Button>
-                            <Button size="small" color="primary">
-                            Edit
-                            </Button>
-                        </CardActions>
                         </Card>
                     </Grid>
                     ))}
@@ -222,10 +218,9 @@ class Profile extends React.Component  {
             {/* Footer */}
             <footer style={{padding: 60}}>
                 <Typography variant="h6" align="center" gutterBottom>
-                Footer
                 </Typography>
                 <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-                Something here to give the footer a purpose!
+                Heart to Heart; Giving made easy
                 </Typography>
                 <Copyright />
             </footer>

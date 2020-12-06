@@ -31,51 +31,6 @@ function Copyright() {
   );
 }
 
-const useStyles = makeStyles((theme) => ({
-  '@global': {
-    ul: {
-      margin: 0,
-      padding: 0,
-      listStyle: 'none',
-    },
-  },
-  appBar: {
-    borderBottom: `1px solid ${theme.palette.divider}`,
-  },
-  toolbar: {
-    flexWrap: 'wrap',
-  },
-  toolbarTitle: {
-    flexGrow: 1,
-  },
-  link: {
-    margin: theme.spacing(1, 1.5),
-  },
-  heroContent: {
-    padding: theme.spacing(8, 0, 6),
-  },
-  cardHeader: {
-    backgroundColor:
-      theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[700],
-  },
-  cardPricing: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'baseline',
-    marginBottom: theme.spacing(2),
-  },
-  footer: {
-    borderTop: `1px solid ${theme.palette.divider}`,
-    marginTop: theme.spacing(8),
-    paddingTop: theme.spacing(3),
-    paddingBottom: theme.spacing(3),
-    [theme.breakpoints.up('sm')]: {
-      paddingTop: theme.spacing(6),
-      paddingBottom: theme.spacing(6),
-    },
-  },
-}));
-
 const tiers = [
   {
     title: 'Expenses',
@@ -128,9 +83,54 @@ const footers = [
   },
 ];
 
+const useStyles = makeStyles((theme) => ({
+  '@global': {
+    ul: {
+      margin: 0,
+      padding: 0,
+      listStyle: 'none',
+    },
+  },
+  appBar: {
+    borderBottom: `1px solid ${theme.palette.divider}`,
+  },
+  toolbar: {
+    flexWrap: 'wrap',
+  },
+  toolbarTitle: {
+    flexGrow: 1,
+  },
+  link: {
+    margin: theme.spacing(1, 1.5),
+  },
+  heroContent: {
+    padding: theme.spacing(8, 0, 6),
+  },
+  cardHeader: {
+    backgroundColor:
+      theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[700],
+  },
+  cardPricing: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'baseline',
+    marginBottom: theme.spacing(2),
+  },
+  footer: {
+    borderTop: `1px solid ${theme.palette.divider}`,
+    marginTop: theme.spacing(8),
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3),
+    [theme.breakpoints.up('sm')]: {
+      paddingTop: theme.spacing(6),
+      paddingBottom: theme.spacing(6),
+    },
+  },
+}));
+
 // const classes = useStyles();
 
-class CharityInfo extends React.component {
+class CharityInfo extends React.Component {
 
   constructor(props) {
     super(props);
@@ -151,20 +151,8 @@ class CharityInfo extends React.component {
         subcategory: "",
         tot_rev: ""
     };
+
     this.getadmin_exp_p = this.getadmin_exp_p.bind(this);
-    this.getcategory = this.getcategory.bind(this);
-    this.getdescription = this.getdescription.bind(this);
-    this.getein = this.getein.bind(this);
-    this.getfund_eff = this.getfund_eff.bind(this);
-    this.getfund_exp_p = this.getfund_exp_p.bind(this);
-    this.getleader_comp = this.getleader_comp.bind(this);
-    this.getmotto = this.getmotto.bind(this);
-    this.getname = this.getname.bind(this);
-    this.getprogram_exp_p = this.getprogram_exp_p.bind(this);
-    this.getsize = this.getsize.bind(this);
-    this.getstate = this.getstate.bind(this);
-    this.getsubcategory = this.getsubcategory.bind(this);
-    this.gettot_rev = this.gettot_rev.bind(this);
   }
 
   getadmin_exp_p(){
@@ -209,14 +197,14 @@ class CharityInfo extends React.component {
     return (
       <React.Fragment>
         <CssBaseline />
-        <AppBar position="static" color="default" elevation={0} style={{classes.appBar}}>
+        <AppBar position="static" color="default" elevation={0}>
           <Toolbar style={{flexWrap: 'wrap'}}>
-            <CameraIcon className={classes.icon} />
-            <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
+            <CameraIcon style={{marginRight: 20}}/>
+            <Typography variant="h6" color="inherit" noWrap style={{flexGrow: 1}}>
               Charitable
             </Typography>
             <nav>
-              <Link variant="button" color="textPrimary" href="#" className={classes.link}>
+              <Link variant="button" color="textPrimary" href="#" style={{marginTop: 10, marginBottom: 10, marginLeft: 15, marginRight: 15}}>
                 Return to My Profile
               </Link>
               {/* <Link variant="button" color="textPrimary" href="#" className={classes.link}>
@@ -226,13 +214,13 @@ class CharityInfo extends React.component {
                 Support
               </Link> */}
             </nav>
-            <Button href="#" color="primary" variant="outlined" className={classes.link}>
+            <Button href="#" color="primary" variant="outlined" style={{marginTop: 10, marginBottom: 10, marginLeft: 15, marginRight: 15}}>
               Logout
             </Button>
           </Toolbar>
         </AppBar>
         {/* Hero unit */}
-        <Container maxWidth="sm" component="main" className={classes.heroContent}>
+        <Container maxWidth="sm" component="main" style={{paddingTop: 80, paddingBottom: 60}}>
           <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
             [Charity Name]
           </Typography>
@@ -256,10 +244,9 @@ class CharityInfo extends React.component {
                     titleTypographyProps={{ align: 'center' }}
                     subheaderTypographyProps={{ align: 'center' }}
                     action={tier.title === 'Pro' ? <StarIcon /> : null}
-                    className={classes.cardHeader}
                   />
                   <CardContent>
-                    <div className={classes.cardPricing}>
+                    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'baseline', marginBottom: 20}}>
                       <Typography component="h2" variant="h3" color="textPrimary">
                         {tier.price}
                       </Typography>
@@ -286,29 +273,14 @@ class CharityInfo extends React.component {
           </Grid>
         </Container>
         {/* Footer */}
-        <Container maxWidth="md" component="footer" className={classes.footer}>
-          <Grid container spacing={4} justify="space-evenly">
-            {footers.map((footer) => (
-              <Grid item xs={6} sm={3} key={footer.title}>
-                <Typography variant="h6" color="textPrimary" gutterBottom>
-                  {footer.title}
-                </Typography>
-                <ul>
-                  {footer.description.map((item) => (
-                    <li key={item}>
-                      <Link href="#" variant="subtitle1" color="textSecondary">
-                        {item}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </Grid>
-            ))}
-          </Grid>
-          <Box mt={5}>
-            <Copyright />
-          </Box>
-        </Container>
+          <footer style={{padding: 60}}>
+              <Typography variant="h6" align="center" gutterBottom>
+              </Typography>
+              <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
+              Heart to Heart; Giving made easy
+              </Typography>
+              <Copyright />
+          </footer>
         {/* End footer */}
       </React.Fragment>
     );
