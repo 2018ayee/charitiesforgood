@@ -103,12 +103,12 @@ export default function Album() {
               <Grid container spacing={2} justify="center">
                 <Grid item>
                   <Button variant="contained" color="primary">
-                    Main call to action
+                    Find charities
                   </Button>
                 </Grid>
                 <Grid item>
                   <Button variant="outlined" color="primary">
-                    Secondary action
+                    [some other action]
                   </Button>
                 </Grid>
               </Grid>
