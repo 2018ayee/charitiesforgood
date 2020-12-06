@@ -85,6 +85,7 @@ class Profile extends React.Component  {
             first_name: "",
             last_name: "",
             charities: [],
+            charity_ids: [],
             charity_titles: [],
             charity_descs: [],
             preferences: [],
@@ -122,17 +123,17 @@ class Profile extends React.Component  {
         
         firebase.firestore().collection("charities").get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
+                let counter = 0;
                 for(let i = 0; i < this.state.charities.length; i++){
                     if (doc.id == this.state.charities[i].charityId){
-                        /*let tempList = this.state.charity_titles.slice();
-                        let tempList2 = this.state.charity_descs.slice();
-                        tempList[i] = doc.data().name;
-                        tempList2[i] = doc.data().description;
-                        this.setState({charity_titles: tempList});
-                        this.setState({charity_descs: tempList2});*/
                         let tempList = this.state.charity_titles.slice();
-                        tempList[i] = { name: doc.data().name, desc: doc.data().description};
+                        let tempList2 = this.state.charity_ids.slice();
+                        tempList[i] = { name: doc.data().name, desc: doc.data().description, count: i};
+                        tempList2[i] = doc.id;
+                        console.log(doc.data());
                         this.setState({charity_titles: tempList});
+                        this.setState({charity_ids: tempList2});
+                        counter++;
                     }
                 }
             });
@@ -236,7 +237,7 @@ class Profile extends React.Component  {
                     {this.state.charity_titles.map((card) => (
                     <Grid item xs={12} sm={6} md={6}>
                         <Card style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
-                        <a href="/charityex">
+                        <a href={"/charity/" + this.state.charity_ids[card.count]}>
                         <CardMedia
                             style={{paddingTop: '56.25%'}}
                             // image="https://source.unsplash.com/random"
