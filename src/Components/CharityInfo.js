@@ -31,42 +31,6 @@ function Copyright() {
   );
 }
 
-const tiers = [
-  {
-    title: 'Expenses',
-    // price: '0',
-    description: [
-      'Program: [program_exp]', 
-      'Administration: ' + this.state.admin_exp_p.toString(),
-      'Fundraising: [fund_exp]'],
-    buttonText: 'Finances',
-    buttonVariant: 'outlined',
-  },
-  {
-    title: 'The Essentials',
-    // subheader: 'about us',
-    // price: '15',
-    description: [
-      'Size: [size]',
-      'Total revenue: [tot_rev]',
-      'Headquarters: [state]',
-      'Motto: [motto]',
-    ],
-    buttonText: 'Website',
-    buttonVariant: 'contained',
-  },
-  {
-    title: 'Details',
-    // price: '30',
-    description: [
-      'Fundraising efficiency: [fund_eff]',
-      'Leader compensation: [leader_comp]',
-      'EIN: [ein]',
-    ],
-    buttonText: 'Donate',
-    buttonVariant: 'outlined',
-  },
-];
 const footers = [
   {
     title: 'Company',
@@ -138,62 +102,114 @@ class CharityInfo extends React.Component {
   constructor(props) {
     super(props);
     // Don't call this.setState() here!
+    var url = window.location.href;
+    var parts = url.split("/");
+    var id = parts[parts.length - 1];
+
     this.state = { 
-        admin_exp_p: 0,
-        category: "",
-        description: "",
-        ein: "",
-        fund_eff: 0,
-        fund_exp_p: 0,
-        leader_comp: 0,
-        motto: "",
-        name: "",
-        program_exp_p: 0,
-        size: "",
-        state: "",
-        subcategory: "",
-        tot_rev: ""
+        tiers: [],
+        footers: [],
+        charity: {
+          admin_exp_p: 0,
+          category: "",
+          description: "",
+          ein: "",
+          fund_eff: 0,
+          fund_exp_p: 0,
+          leader_comp: 0,
+          motto: "",
+          name: "",
+          program_exp_p: 0,
+          size: "",
+          state: "",
+          subcategory: "",
+          tot_rev: "",
+        },
+        id: id,
     };
+    this.state.tiers = [
+      {
+        title: 'Expenses',
+        // price: '0',
+        description: ['Financial score: ' + this.state.charity.fscore, 'Program: ' + this.state.charity.program_exp_p, 'Administration: ' + this.state.charity.admin_exp_p, 'Fundraising: ' + this.state.charity.fund_exp_p],
+        buttonText: 'Finances',
+        buttonVariant: 'outlined',
+      },
+      {
+        title: 'The Essentials',
+        // subheader: 'about us',
+        // price: '15',
+        description: [
+          'Size: ' + this.state.charity.size,
+          'Total revenue: ' + this.state.charity.tot_rev,
+          'Headquarters: ' + this.state.charity.state,
+          'Motto: ' + this.state.charity.motto,
+        ],
+        buttonText: 'Website',
+        buttonVariant: 'contained',
+      },
+      {
+        title: 'Details',
+        // price: '30',
+        description: [
+          'Fundraising efficiency: ' + this.state.charity.fund_eff,
+          'Leader compensation: ' + this.state.charity.leader_comp,
+          'EIN: ' + this.state.charity.ein,
+        ],
+        buttonText: 'Donate',
+        buttonVariant: 'outlined',
+      },
+    ]
 
-    this.getadmin_exp_p = this.getadmin_exp_p.bind(this);
-  }
-
-  getadmin_exp_p(){
-    firebase.auth().onAuthStateChanged((user) => {
-        if (user){
-            this.setState({userid: user.uid}, () => {console.log(this.state.userid)});
-        } else {
-            console.log("error");
-        }
-    })
-
-    firebase.firestore().collection("users").get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            if (doc.id === this.state.userid){
-                this.setState({charityId: doc.data().charityId}, () => {console.log(this.state.charityId)});
-            }
-        });
-    });
-
-    firebase.auth().onAuthStateChanged((charity) => {
-      if (charity){
-          this.setState({charityid: charity.uid}, () => {console.log(this.state.charityid)});
-      } else {
-          console.log("error");
-      }
-    })
-
-    firebase.firestore().collection("charities").get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-          if (doc.id === this.state.charityid){
-              this.setState({admin_exp_p: doc.data().admin_exp_p}, () => {console.log(this.state.admin_exp_p)});
-          }
-      });
-    });
   }
 
   componentDidMount(){
-      this.getadmin_exp_p(this.state.charityid);
+    const db = firebase.firestore();
+    db.collection("charities").doc(this.state.id).get().then(doc => {
+      if (doc.exists) {
+        let data = doc.data()
+        this.setState({charity: data}, function() {
+          this.setState({ tiers: [
+            {
+              title: 'Expenses',
+              // price: '0',
+              description: ['Financial score: ' + this.state.charity.fscore, 'Program: ' + this.state.charity.program_exp_p, 'Administration: ' + this.state.charity.admin_exp_p, 'Fundraising: ' + this.state.charity.fund_exp_p],
+              buttonText: 'Finances',
+              buttonVariant: 'outlined',
+            },
+            {
+              title: 'The Essentials',
+              // subheader: 'about us',
+              // price: '15',
+              description: [
+                'Size: ' + this.state.charity.size,
+                'Total revenue: $' + this.state.charity.tot_rev,
+                'Headquarters: ' + this.state.charity.state,
+                'Motto: ' + this.state.charity.motto,
+              ],
+              buttonText: 'Website',
+              buttonVariant: 'contained',
+            },
+            {
+              title: 'Details',
+              // price: '30',
+              description: [
+                'Fundraising efficiency: ' + this.state.charity.fund_eff,
+                'Leader compensation: $' + this.state.charity.leader_comp,
+                'EIN: ' + this.state.charity.ein,
+              ],
+              buttonText: 'Donate',
+              buttonVariant: 'outlined',
+            },
+          ]})
+        })
+      }
+      else {
+        console.log("doesnt exist")
+      }
+    }).catch(function(err) {
+      console.log(err)
+    })
   }
 
   render(){
@@ -223,21 +239,21 @@ class CharityInfo extends React.Component {
           </Toolbar>
         </AppBar>
         {/* Hero unit */}
-        <Container maxWidth="sm" component="main" style={{paddingTop: 80, paddingBottom: 60}}>
+        <Container maxWidth="lg" component="main" style={{paddingTop: 80, paddingBottom: 60}}>
           <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-            [Charity Name]
+            {this.state.charity.name}
           </Typography>
           <Typography variant="h5" align="center" color="textSecondary" component="p">
-            <i>[Categories]</i>
-          </Typography>
-          <Typography variant="h5" align="center" color="textSecondary" component="p">
-            [Description.]
+            <i>{this.state.charity.category}</i>
+          </Typography> <br />
+          <Typography variant="h6" align="center" color="textSecondary" component="p">
+            {this.state.charity.description}
           </Typography>
         </Container>
         {/* End hero unit */}
         <Container maxWidth="md" component="main">
           <Grid container spacing={5} alignItems="flex-end">
-            {tiers.map((tier) => (
+            {this.state.tiers.map((tier) => (
               // Enterprise card is full width at sm breakpoint
               <Grid item key={tier.title} xs={12} sm={tier.title === 'Enterprise' ? 12 : 6} md={4}>
                 <Card>
