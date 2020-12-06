@@ -139,7 +139,7 @@ export default function ConfirmationScreen(props) {
               <TableBody>
                 {charityData.map((charity) => (
                   <TableRow hover key={charity.charityId}>
-                    <TableCell>{charity.name}</TableCell>
+                    <TableCell><a href={"/charity/" + charity.charityId} target="_blank">{charity.name}</a></TableCell>
                     <TableCell>{charity.charityId}</TableCell>
                     <TableCell>{`\$${charity.value}.00`}</TableCell>
                   </TableRow>
