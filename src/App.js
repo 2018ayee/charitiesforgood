@@ -1,5 +1,4 @@
 import './App.css';
-import ProfileHome from './Components/ProfileHome';
 import firebase from 'firebase';
 import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen';
@@ -25,7 +24,7 @@ function App() {
   useEffect(() => {
     const db = firebase.firestore()
     setUser(db.collection("users").get())//get the specific user logged in and store in state
-
+  
   }, [])*/
    //       <Route path="/signUp" component = {() => <SignUp user={user}> </SignUp>} >
 
@@ -33,11 +32,10 @@ function App() {
 
     <Router>
     <div>
-
-
       {/* A <Switch> looks through its children <Route>s and
           renders the first one that matches the current URL. */}
       <Switch>
+        <Route path="/" exact component = {HomeScreen}/>
         <Route path="/home" component = {HomeScreen}>
 
         </Route>
@@ -45,6 +43,9 @@ function App() {
         
         </Route>
         <Route path="/charities" component = {Charities}>
+        </Route>
+        <Route path="/profile" component = {Profile}>
+    
         </Route>
         {/* <Route path="/">
           <Home /> */}
