@@ -49,7 +49,7 @@ class HomeScreen extends React.Component {
     handleSubmit(e) {
         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
         .then((user) => {
-            console.log("Signed In!")
+            this.props.history.push('/charities')
         })
         .catch((error) => {
             var errorCode = error.code;
