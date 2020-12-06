@@ -39,7 +39,11 @@ class Copyright extends React.Component {
     }
 }
 
+
+
 class SignUp extends React.Component  {
+    
+
     constructor(props) {
         super(props);
         // Don't call this.setState() here!
@@ -56,16 +60,30 @@ class SignUp extends React.Component  {
         this.email = this.email.bind(this);
     }
     
-    handleSubmit(e) {
-        console.log("hi")
+    handleSubmit = (e) => {
+        const db = firebase.firestore();
         firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
             .then((user) => {
-                console.log("Signed In!")
+                console.log(user)
+                 db.collection("users").doc(user.user.uid).set({
+                    firstName: this.state.firstName,
+                    lastName: this.state.lastName,
+                    email: this.state.email,
+                    charities: [],
+                    preferences: [],
+                })
+                .then(function() {
+                    console.log("Document successfully written!");
+                    //window.location.href = '/setup'
+                })
+                .catch(function(error) {
+                    console.error("Error writing document: ", error);
+                });
             })
             .catch((error) => {
                 var errorCode = error.code;
                 var errorMessage = error.message;
-                console.log(errorCode)
+                alert(errorMessage)
         });
     }
 

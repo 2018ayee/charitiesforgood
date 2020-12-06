@@ -2,10 +2,12 @@ import './App.css';
 import firebase from 'firebase';
 import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen';
+import SignUp from "./Components/SignUp.js";
 import SetupScreen from './screens/SetupScreen';
-import SignUp from "./Components/SignUp.js"
 import Charities from './Components/Charities';
-import Profile from './Components/Profile';
+import Profile from  './Components/Profile'
+import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   if (!firebase.apps.length) {
@@ -35,20 +37,15 @@ function App() {
           renders the first one that matches the current URL. */}
       <Switch>
         <Route path="/" exact component = {HomeScreen}/>
-        <Route path="/home" component = {HomeScreen}>
-
-        </Route>
+    
         <Route path="/signUp" component = {SignUp}>
         
         </Route>
         <Route path="/charities" component = {Charities}>
         </Route>
         <Route path="/profile" component = {Profile}>
-    
+          
         </Route>
-        {/* <Route path="/">
-          <Home /> */}
-        {/* </Route> */}
         <Route path='/setup' component = {SetupScreen}/>
       </Switch>
     </div>

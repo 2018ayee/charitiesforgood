@@ -37,6 +37,10 @@
   }
 }
 
+.highlighted {
+  border: '4px solid green'
+}
+
 .root {
   
 }
