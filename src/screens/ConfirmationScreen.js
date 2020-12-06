@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
-import clsx from 'clsx';
-import moment from 'moment';
-import { v4 as uuid } from 'uuid';
-import PerfectScrollbar from 'react-perfect-scrollbar';
+import React, { useState } from "react";
+import clsx from "clsx";
+import moment from "moment";
+import { v4 as uuid } from "uuid";
+import PerfectScrollbar from "react-perfect-scrollbar";
+import PropTypes from "prop-types";
+import { Doughnut } from "react-chartjs-2";
+import { CardContent, Typography, colors, useTheme } from "@material-ui/core";
+import LaptopMacIcon from "@material-ui/icons/LaptopMac";
+import PhoneIcon from "@material-ui/icons/Phone";
+import TabletIcon from "@material-ui/icons/Tablet";
 import {
   Box,
   Button,
@@ -14,157 +20,150 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  TableFooter,
   TableSortLabel,
   TextField,
   Tooltip,
-  makeStyles
-} from '@material-ui/core';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-const data = [
-    {
-      id: uuid(),
-      ref: 'CDD1049',
-      amount: 30.5,
-      customer: {
-        name: 'Ekaterina Tankova'
-      },
-      createdAt: 1555016400000,
-      status: 'pending'
-    },
-    {
-      id: uuid(),
-      ref: 'CDD1048',
-      amount: 25.1,
-      customer: {
-        name: 'Cao Yu'
-      },
-      createdAt: 1555016400000,
-      status: 'delivered'
-    },
-    {
-      id: uuid(),
-      ref: 'CDD1047',
-      amount: 10.99,
-      customer: {
-        name: 'Alexa Richardson'
-      },
-      createdAt: 1554930000000,
-      status: 'refunded'
-    },
-    {
-      id: uuid(),
-      ref: 'CDD1046',
-      amount: 96.43,
-      customer: {
-        name: 'Anje Keizer'
-      },
-      createdAt: 1554757200000,
-      status: 'pending'
-    },
-    {
-      id: uuid(),
-      ref: 'CDD1045',
-      amount: 32.54,
-      customer: {
-        name: 'Clarke Gillebert'
-      },
-      createdAt: 1554670800000,
-      status: 'delivered'
-    },
-    {
-      id: uuid(),
-      ref: 'CDD1044',
-      amount: 16.76,
-      customer: {
-        name: 'Adam Denisov'
-      },
-      createdAt: 1554670800000,
-      status: 'delivered'
-    }
-  ];
+  makeStyles,
+} from "@material-ui/core";
+import ArrowRightIcon from "@material-ui/icons/ArrowRight";
+import firebase from "firebase/app";
+import { typography } from "@material-ui/system";
 
+export default function ConfirmationScreen(props) {
   const useStyles = makeStyles(() => ({
     root: {},
     actions: {
-      justifyContent: 'flex-end'
-    }
+      justifyContent: "flex-end",
+    },
   }));
-export default function ConfirmationScreen () {
-        const classes = useStyles();
-        const [orders] = useState(data);
-        return (
-          <Card
-            className={clsx(classes.root, "")}
-          >
-            <CardHeader title="Please Enter Your Monthly Contributions" />
-            <Divider />
-            <PerfectScrollbar>
-              <Box minWidth={800}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>
-                        Order Ref
-                      </TableCell>
-                      <TableCell>
-                        Customer
-                      </TableCell>
-                      <TableCell sortDirection="desc">
-                        <Tooltip
-                          enterDelay={300}
-                          title="Sort"
-                        >
-                          <TableSortLabel
-                            active
-                            direction="desc"
-                          >
-                            Date
-                          </TableSortLabel>
-                        </Tooltip>
-                      </TableCell>
-                      <TableCell>
-                        Amount
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {orders.map((order) => (
-                      <TableRow
-                        hover
-                        key={order.id}
-                      >
-                        <TableCell>
-                          {order.ref}
-                        </TableCell>
-                        <TableCell>
-                          {order.customer.name}
-                        </TableCell>
-                        <TableCell>
-                          {moment(order.createdAt).format('DD/MM/YYYY')}
-                        </TableCell>
-                        <TableCell>
-                        <TextField id="outlined-basic" label="Value" variant="outlined" />
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+
+  const classes = useStyles();
+  const theme = useTheme();
+
+  var charityData = props.data;
+  console.log("CHARITYDATA:", charityData);
+
+  const ringData = {
+    datasets: [
+      {
+        data: [20, 20, 20, 20, 20],
+        backgroundColor: [
+          colors.indigo[500],
+          colors.red[600],
+          colors.orange[600],
+          colors.green[600],
+          colors.yellow[600],
+        ],
+        borderWidth: 8,
+        borderColor: colors.common.white,
+        hoverBorderColor: colors.common.white,
+      },
+    ],
+    labels: charityData.map((a) => a.name),
+  };
+  var sum = 0;
+  charityData.map((a) => (sum += parseInt(a.value, 10)));
+
+  const options = {
+    animation: false,
+    cutoutPercentage: 80,
+    layout: { padding: 0 },
+    legend: {
+      display: false,
+    },
+    maintainAspectRatio: false,
+    responsive: true,
+    tooltips: {
+      backgroundColor: theme.palette.background.default,
+      bodyFontColor: theme.palette.text.secondary,
+      borderColor: theme.palette.divider,
+      borderWidth: 1,
+      enabled: true,
+      footerFontColor: theme.palette.text.secondary,
+      intersect: false,
+      mode: "index",
+      titleFontColor: theme.palette.text.primary,
+    },
+  };
+  const cardHeaderStyle = {
+    background: "#42a5f5",
+  };
+  const tableRowStyle = {
+    fontWeight: "bold",
+  };
+  const totalStyle = {
+    fontWeight: "bold",
+    fontSize: 20
+  };
+  return (
+    <div>
+      <Card className={clsx(classes.root, "ring")}>
+        <CardHeader
+          title="Your Monthly Contribution:"
+          style={cardHeaderStyle}
+        />
+        <Divider />
+        <CardContent>
+          <Box height={300} position="relative">
+            <Doughnut data={ringData} options={options} />
+          </Box>
+          <Box display="flex" justifyContent="center" mt={2}>
+            {charityData.map(({ charityId, name, value }) => (
+              <Box key={name} p={1} textAlign="center">
+                <Typography color="textPrimary" variant="body1">
+                  {name}
+                </Typography>
+                <Typography color="textSecondary" variant="h2">
+                  {20}%
+                </Typography>
               </Box>
-            </PerfectScrollbar>
-            <Box
-              display="flex"
-              justifyContent="flex-end"
-              p={2}
-            >
-              <Button
-                color="primary"
-                endIcon={<ArrowRightIcon />}
-                size="small"
-                variant="text"
-              >
-                Next
-              </Button>
-            </Box>
-          </Card>
-        );
-      };
+            ))}
+          </Box>
+        </CardContent>
+      </Card>
+      <Card className={clsx(classes.root, "")}>
+        <CardHeader title="Charities Picked for You:" style={cardHeaderStyle} />
+        <Divider />
+        <PerfectScrollbar>
+          <Box minWidth={800}>
+            <Table>
+              <TableHead>
+                <TableRow style={tableRowStyle}>
+                  <TableCell style={tableRowStyle}>Charity Name</TableCell>
+                  <TableCell style={tableRowStyle}>Charity ID</TableCell>
+                  <TableCell style={tableRowStyle}>Amount</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {charityData.map((charity) => (
+                  <TableRow hover key={charity.charityId}>
+                    <TableCell>{charity.name}</TableCell>
+                    <TableCell>{charity.charityId}</TableCell>
+                    <TableCell>{`\$${charity.value}.00`}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+                <TableRow hover key={"0000"}>
+                  <TableCell style={totalStyle}>Total Cost:</TableCell>
+                  <TableCell></TableCell>
+                  <TableCell style={totalStyle}>{`\$${sum}.00`}</TableCell>
+                </TableRow>
+            </Table>
+          </Box>
+        </PerfectScrollbar>
+        <Box display="flex" justifyContent="flex-end" p={2}>
+          <Button
+            href="/profile"
+            color="primary"
+            endIcon={<ArrowRightIcon />}
+            size="large"
+            variant="text"
+          >
+            Confirm
+          </Button>
+        </Box>
+      </Card>
+    </div>
+  );
+}

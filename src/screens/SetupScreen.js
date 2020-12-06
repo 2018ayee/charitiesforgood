@@ -4,7 +4,7 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import ListSubheader from '@material-ui/core/ListSubheader';
-import IconButton from '@material-ui/core/IconButton';
+import {Container, Card} from '@material-ui/core/';
 import InfoIcon from '@material-ui/icons/Info';
 import arts from '../img/arts.jpg'
 import firebase from 'firebase/app'
@@ -18,6 +18,7 @@ export default class SetupScreen extends React.Component{
         super(props);
         this.gridRef = React.createRef();
         this.state = {
+            data: {},
             userId: "jqc0xSYXMjg0wabiqmsN",
             onCategories: true,
             onFilters: false,
@@ -182,21 +183,22 @@ export default class SetupScreen extends React.Component{
             results = results.slice(0, 5)
             console.log(results)
             console.log(this.state.userId)
-            
+
             var userRef = db.collection("users").doc(this.state.userId);
             let c = []
             let valuePerCharity = this.state.donationAmount / results.length
             results.forEach(r => {
-                c.push({charityId: r.id, value: valuePerCharity})
+                c.push({name: r.name, charityId: r.id, value: valuePerCharity})
+
             })
+            this.setState({data: c});
+            console.log("PREVIOUS PAGE C:",this.state.data)
 
             await userRef.update({
                 preferences: this.state.selectedCategories,
                 charities: c
             })
-
-            
-            //this.setState({onFilters: false, onConfirmation: true})
+            this.setState({onFilters: false, onConfirmation: true})
         }
     }
 
@@ -213,7 +215,8 @@ export default class SetupScreen extends React.Component{
         let paymentScreen;
 
         if (this.state.onCategories) {
-            categoryScreen = 
+            categoryScreen =
+            <div className="mt-3">
             <div style={{display: 'flex', width: "100%", flexWrap: 'wrap', alignItems: "center", justifyContent: 'center', overflow: 'hidden', flexDirection: 'column'}}>
               <h1 style={{marginBottom: 40}}>Welcome! Select your interests below</h1>
               <GridList cellHeight={180} style={{width: "80%"}} cols={4} ref={this.gridRef}>
@@ -229,11 +232,13 @@ export default class SetupScreen extends React.Component{
               <div style={{justifyContent: 'space-around', alignItems: 'center', marginTop: 20}}>
                   <Button variant="outline-primary" onClick={this.toFilters}>Next</Button>
               </div>
+              <div className="mb-3"></div>
+            </div>
             </div>
         }
 
         if (this.state.onFilters) {
-            filterScreen = 
+            filterScreen =
             <div style={{display: 'flex', width: "100%", flexWrap: 'wrap', alignItems: "center", justifyContent: 'center', overflow: 'hidden', flexDirection: 'column'}}>
                 <h1 style={{marginBottom: 40}}>Enter donation options</h1>
                 <Form>
@@ -290,24 +295,26 @@ export default class SetupScreen extends React.Component{
         if (this.state.onConfirmation) {
             confirmationScreen=
             <div>
-                Confirmation screen
+                <ConfirmationScreen data={this.state.data}/>
             </div>
         }
 
         if (this.state.onPayment) {
             paymentScreen =
             <div>
-                <ConfirmationScreen />
+                <ConfirmationScreen data={this.state.data}/>
             </div>
         }
 
         return(
-            <div>
+            <Container>
+                <Card>
                 {categoryScreen}
                 {filterScreen}
                 {confirmationScreen}
                 {paymentScreen}
-            </div>
+                </Card>
+            </Container>
         )
     }
 }
