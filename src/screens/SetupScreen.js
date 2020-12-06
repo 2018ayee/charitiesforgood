@@ -4,7 +4,7 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import ListSubheader from '@material-ui/core/ListSubheader';
-import IconButton from '@material-ui/core/IconButton';
+import {Container, Card} from '@material-ui/core/';
 import InfoIcon from '@material-ui/icons/Info';
 import arts from '../img/arts.jpg'
 import firebase from 'firebase/app'
@@ -17,7 +17,6 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Avatar from '@material-ui/core/Avatar';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -46,6 +45,7 @@ export default class SetupScreen extends React.Component{
         super(props);
         this.gridRef = React.createRef();
         this.state = {
+            data: {},
             userId: "jqc0xSYXMjg0wabiqmsN",
             onCategories: true,
             onFilters: false,
@@ -210,20 +210,22 @@ export default class SetupScreen extends React.Component{
             results = results.slice(0, 5)
             console.log(results)
             console.log(this.state.userId)
-            
+
             var userRef = db.collection("users").doc(this.state.userId);
             let c = []
             let valuePerCharity = this.state.donationAmount / results.length
             results.forEach(r => {
-                c.push({charityId: r.id, value: valuePerCharity})
+                c.push({name: r.name, charityId: r.id, value: valuePerCharity})
+
             })
+            this.setState({data: c});
+            console.log("PREVIOUS PAGE C:",this.state.data)
 
             const updatePromise = await userRef.update({
                 preferences: this.state.selectedCategories,
                 charities: c
             })
 
-            
             this.setState({onFilters: false, onConfirmation: true})
         }
     }
@@ -246,6 +248,7 @@ export default class SetupScreen extends React.Component{
         let paymentScreen;
 
         if (this.state.onCategories) {
+
             categoryScreen = 
 
             <div style={{display: 'flex', width: "100%", flexWrap: 'wrap', alignItems: "center", justifyContent: 'center', overflow: 'hidden', flexDirection: 'column'}}>
@@ -267,10 +270,12 @@ export default class SetupScreen extends React.Component{
               <div style={{justifyContent: 'space-around', alignItems: 'center', marginTop: 20}}>
                   <Button color="primary" onClick={this.toFilters}>Next</Button>
               </div>
+              <div className="mb-3"></div>
             </div>
         }
 
         if (this.state.onFilters) {
+
             filterScreen = 
             <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -357,24 +362,26 @@ export default class SetupScreen extends React.Component{
         if (this.state.onConfirmation) {
             confirmationScreen=
             <div>
-                Confirmation screen
+                <ConfirmationScreen data={this.state.data}/>
             </div>
         }
 
         if (this.state.onPayment) {
             paymentScreen =
             <div>
-                <ConfirmationScreen />
+                <ConfirmationScreen data={this.state.data}/>
             </div>
         }
 
         return(
-            <div>
+            <Container>
+                <Card>
                 {categoryScreen}
                 {filterScreen}
                 {confirmationScreen}
                 {paymentScreen}
-            </div>
+                </Card>
+            </Container>
         )
     }
 }
