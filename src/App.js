@@ -45,9 +45,6 @@ function App() {
         <Route path="/profile" component = {Profile}>
     
         </Route>
-        {/* <Route path="/">
-          <Home /> */}
-        {/* </Route> */}
         <Route path='/setup' component = {SetupScreen}/>
       </Switch>
     </div>
