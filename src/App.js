@@ -31,25 +31,17 @@ function App() {
    //       <Route path="/signUp" component = {() => <SignUp user={user}> </SignUp>} >
 
   return (
-
     <Router>
     <div>
       {/* A <Switch> looks through its children <Route>s and
           renders the first one that matches the current URL. */}
       <Switch>
-        <Route path="/home" exact component = {HomeScreen}/>
-    
-        <Route path="/signUp" component = {SignUp}>
-        
-        </Route>
-        <Route path="/charities" component = {Charities}>
-        </Route>
-        <Route path="/profile" component = {Profile}>
-          
-        </Route>
-        <Route path="/charityex" component = {CharityInfo}>
-          
-        </Route>
+        <Route path="/" exact component = {HomeScreen}/>
+        <Route path="/home" component = {HomeScreen}/>
+        <Route path="/signUp" component = {SignUp}/>
+        <Route path="/charities" component = {Charities}/>
+        <Route path="/profile" component = {Profile}/>
+        <Route path="/charityex" component = {CharityInfo}/>
         <Route path='/setup' component = {SetupScreen}/>
       </Switch>
     </div>

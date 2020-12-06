@@ -67,7 +67,6 @@ const useStyles = makeStyles((theme) => ({
 
 const top_cards = [0, 1, 2];
 const med_cards = [3, 4];
-const charities = [0, 1, 2, 3];
 
 
 class Profile extends React.Component  {
@@ -84,6 +83,7 @@ class Profile extends React.Component  {
             userid: "",
             first_name: "",
             last_name: "",
+            charities: [0, 1, 2, 3],
         };
 
         this.readData = this.readData.bind(this);
@@ -103,6 +103,7 @@ class Profile extends React.Component  {
                 if (doc.id === this.state.userid){
                     this.setState({first_name: doc.data().firstName.toLowerCase()}, () => {console.log(this.state.first_name)});
                     this.setState({last_name: doc.data().lastName.toLowerCase()}, () => {console.log(this.state.last_name)});
+                    this.setState({charities: doc.data().charities}, () => {console.log(this.state.charities)});
                 }
             });
         });
@@ -191,7 +192,7 @@ class Profile extends React.Component  {
                         </Card>
                     </Grid>
                     ))}
-                    {charities.map((card) => (
+                    {this.state.charities.map((card) => (
                     <Grid item key={card} xs={12} sm={6} md={3}>
                         <Card style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
                         <a href="/charityex">
