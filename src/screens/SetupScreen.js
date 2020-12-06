@@ -174,7 +174,7 @@ export default class SetupScreen extends React.Component{
         if (this.state.onCategories) {
             categoryScreen = 
             <div style={{display: 'flex', width: "100%", flexWrap: 'wrap', alignItems: "center", justifyContent: 'center', overflow: 'hidden', flexDirection: 'column'}}>
-              <h1 style={{marginBottom: 40}}>Select your interests below</h1>
+              <h1 style={{marginBottom: 40}}>Welcome! Select your interests below</h1>
               <GridList cellHeight={180} style={{width: "80%"}} cols={4} ref={this.gridRef}>
                 {this.state.categories.map((category) => (
                   <GridListTile key={category.name} id={category.name} onClick={() => this.addCharity(category)}>

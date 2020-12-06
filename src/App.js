@@ -37,16 +37,14 @@ function App() {
           renders the first one that matches the current URL. */}
       <Switch>
         <Route path="/" exact component = {HomeScreen}/>
-        <Route path="/home" component = {HomeScreen}>
-
-        </Route>
+    
         <Route path="/signUp" component = {SignUp}>
         
         </Route>
         <Route path="/charities" component = {Charities}>
         </Route>
         <Route path="/profile" component = {Profile}>
-    
+          
         </Route>
         <Route path='/setup' component = {SetupScreen}/>
       </Switch>
