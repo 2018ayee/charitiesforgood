@@ -39,7 +39,9 @@ class HomeScreen extends React.Component {
         // Don't call this.setState() here!
         this.state = { 
             email: "",
-            password: ""
+            password: "",
+            emailError: false,
+            passwordError: false,
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.password = this.password.bind(this);
@@ -54,7 +56,16 @@ class HomeScreen extends React.Component {
         .catch((error) => {
             var errorCode = error.code;
             var errorMessage = error.message;
-            console.log("wrong")
+            if (errorCode === "auth/invalid-email") {
+                this.setState({ emailError: true, passwordError: false })
+            }
+            else if (errorCode === "auth/wrong-password") {
+                this.setState({ emailError: false, passwordError: true })
+            }
+            else {
+                this.setState({ emailError: true, passwordError: true })
+            }
+            alert(errorMessage)
         });
     }
 
@@ -90,6 +101,7 @@ class HomeScreen extends React.Component {
                     name="email"
                     autoComplete="email"
                     onChange = {this.email}
+                    error = {this.state.emailError}
                     autoFocus
                     />
                     <TextField
@@ -103,6 +115,7 @@ class HomeScreen extends React.Component {
                     id="password"
                     autoComplete="current-password"
                     onChange = {this.password}
+                    error = {this.state.passwordError}
                     />
                     <FormControlLabel
                     control={<Checkbox value="remember" color="primary" />}

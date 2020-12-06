@@ -51,7 +51,11 @@ class SignUp extends React.Component  {
             firstName: "",
             lastName: "",
             email: "",
-            password: ""
+            password: "",
+            emailError: false,
+            passwordError: false,
+            firstNameError: false,
+            lastNameError: false,
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.firstName = this.firstName.bind(this);
@@ -61,6 +65,12 @@ class SignUp extends React.Component  {
     }
     
     handleSubmit = (e) => {
+        if (this.state.firstName === "" || this.state.lastName === "") {
+            this.setState({ firstNameError: true, lastNameError: true, emailError: false, passwordError: false })
+            alert("Please fill out name")
+            return
+        }
+
         const db = firebase.firestore();
         firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
             .then((user) => {
@@ -74,7 +84,7 @@ class SignUp extends React.Component  {
                 })
                 .then(function() {
                     console.log("Document successfully written!");
-                    //window.location.href = '/setup'
+                    window.location.href = '/setup'
                 })
                 .catch(function(error) {
                     console.error("Error writing document: ", error);
@@ -83,6 +93,15 @@ class SignUp extends React.Component  {
             .catch((error) => {
                 var errorCode = error.code;
                 var errorMessage = error.message;
+                if (errorCode === "auth/invalid-email" || errorCode === "auth/email-already-in-use") {
+                    this.setState({ firstNameError: false, lastNameError: false, emailError: true, passwordError: false })
+                }
+                else if (errorCode === "auth/weak-password") {
+                    this.setState({ firstNameError: false, lastNameError: false, emailError: false, passwordError: true })
+                }
+                else {
+                    this.setState({ firstNameError: false, lastNameError: false, emailError: true, passwordError: true })
+                }
                 alert(errorMessage)
         });
     }
@@ -110,7 +129,7 @@ class SignUp extends React.Component  {
             <CssBaseline />
             <div style={{marginTop: 80, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                 <Avatar style={{margin:10}}>
-                <LockOutlinedIcon />
+                <img style={{height: 40, width: 40}} src="https://www.cardiacscience.co.uk/wp-content/uploads/2019/02/412862.002_Blog-images_13_NHAwarenessMonth_N1.png"/>
                 </Avatar>
                 <Typography component="h1" variant="h5">
                 Sign up
@@ -127,6 +146,7 @@ class SignUp extends React.Component  {
                         id="firstName"
                         label="First Name"
                         onChange={this.firstName}
+                        error={this.state.firstNameError}
                         autoFocus
                     />
                     </Grid>
@@ -139,6 +159,7 @@ class SignUp extends React.Component  {
                         label="Last Name"
                         name="lastName"
                         onChange={this.lastName}
+                        error={this.state.lastNameError}
                         autoComplete="lname"
                     />
                     </Grid>
@@ -151,6 +172,7 @@ class SignUp extends React.Component  {
                         label="Email Address"
                         name="email"
                         onChange={this.email}
+                        error={this.state.emailError}
                         autoComplete="email"
                     />
                     </Grid>
@@ -164,6 +186,7 @@ class SignUp extends React.Component  {
                         type="password"
                         id="password"
                         onChange={this.password}
+                        error={this.state.passwordError}
                         autoComplete="current-password"
                     />
                     </Grid>
