@@ -83,25 +83,39 @@ class Profile extends React.Component  {
     constructor(props){
         super(props);
         this.state = {
+            userid: "",
             first_name: "",
         };
 
+        this.getUserID = this.getUserID.bind(this);
         this.getFirstName = this.getFirstName.bind(this);
     }
     
-    getFirstName(id){
+    getFirstName(){
+        firebase.auth().onAuthStateChanged((user) => {
+            if(user){
+                this.setState({userid: user.uid}, () => {console.log(this.state.userid)});
+            } else {
+                console.log("error");
+            }
+        })
+
         firebase.firestore().collection("users").get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                if (doc.id === id){
-                    console.log(doc.data().firstName);
-                    this.setState({first_name: doc.data().firstName});
+                if (doc.id === this.state.userid){
+                    this.setState({first_name: doc.data().firstName}, () => {console.log(this.state.first_name)});
                 }
             });
         });
     }
 
     componentDidMount(){
-        this.getFirstName("jqc0xSYXMjg0wabiqmsN");
+        //this.getUserID();
+        this.getFirstName(this.state.userid);
+    }
+
+    componentDidUpdate(){
+        
     }
 
     render(){
