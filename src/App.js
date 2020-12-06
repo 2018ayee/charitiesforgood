@@ -4,8 +4,9 @@ import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-ro
 import HomeScreen from './screens/HomeScreen';
 import SignUp from "./Components/SignUp.js";
 import SetupScreen from './screens/SetupScreen';
-import Charities from './Components/Charities';
-import Profile from  './Components/Profile';
+// import Charities from './Components/Charities';
+import Profile from  './Components/Profile'
+import CharityInfo from  './Components/CharityInfo'
 import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -30,22 +31,16 @@ function App() {
    //       <Route path="/signUp" component = {() => <SignUp user={user}> </SignUp>} >
 
   return (
-
     <Router>
     <div>
       {/* A <Switch> looks through its children <Route>s and
           renders the first one that matches the current URL. */}
       <Switch>
         <Route path="/" exact component = {HomeScreen}/>
-    
-        <Route path="/signUp" component = {SignUp}>
-        
-        </Route>
-        <Route path="/charities" component = {Charities}>
-        </Route>
-        <Route path="/profile" component = {Profile}>
-          
-        </Route>
+        <Route path="/home" component = {HomeScreen}/>
+        <Route path="/signUp" component = {SignUp}/>
+        <Route path="/profile" component = {Profile}/>
+        <Route path="/charity/:id" component = {CharityInfo}/>
         <Route path='/setup' component = {SetupScreen}/>
         
       </Switch>
