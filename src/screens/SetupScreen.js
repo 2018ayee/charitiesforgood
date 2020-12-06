@@ -8,10 +8,15 @@ import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
 import arts from '../img/arts.jpg'
 import firebase from 'firebase/app'
-import Button from 'react-bootstrap/Button';
+import Button from '@material-ui/core/Button';
 import Form from 'react-bootstrap/Form';
 import RangeSlider from 'react-bootstrap-range-slider';
 import ConfirmationScreen from "./ConfirmationScreen"
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 export default class SetupScreen extends React.Component{
     constructor(props) {
@@ -25,47 +30,47 @@ export default class SetupScreen extends React.Component{
             categories: [
                 {
                     name: "Community Development",
-                    img: "https://www.dailyreleased.com/wp-content/uploads/2020/08/Community-Development.jpg"
+                    img: "https://www.jolietymca.org/dev-2018/wp-content/uploads/2019/11/Giving-Tuesday.png"
                 },
                 {
                     name: "International",
-                    img: "https://static.kent.ac.uk/nexus/ems/63.jpg"
+                    img: "https://upload.wikimedia.org/wikipedia/commons/4/4b/La_Tour_Eiffel_vue_de_la_Tour_Saint-Jacques%2C_Paris_ao%C3%BBt_2014_%282%29.jpg"
                 },
                 {
                     name: "Human Services",
-                    img: "https://9b16f79ca967fd0708d1-2713572fef44aa49ec323e813b06d2d9.ssl.cf2.rackcdn.com/1140x_a10-7_cTC/636020306-1532270766.jpg"
+                    img: "https://www.usnews.com/dims4/USNEWS/af518a6/2147483647/resize/1200x%3E/quality/85/?url=http%3A%2F%2Fmedia.beam.usnews.com%2F1c%2F13%2F89c5d83f442897aa59318c304759%2Fnurselaughingresident.jpg"
                 },
                 {
                     name: "Arts, Culture, Humanities",
-                    img: "https://iafor.org/wp-content/uploads/2017/01/IAFOR-Journal-of-Cultural-Studies-600x450.jpg"
+                    img: "https://mymodernmet.com/wp/wp-content/uploads/2019/03/elements-of-art-6.jpg"
                 },
                 {
                     name: "Research and Public Policy",
-                    img: "https://static-cms.hotjar.com/images/blog-26-0120featured.width-750.png",
+                    img: "https://cdn.the-scientist.com/assets/articleNo/66520/aImg/33891/women-in-science-l.jpg" 
                 },
                 {
                     name: "Religion",
-                    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBi9wolAPTGzYS9JU5bM8wey8Vcj3YJcCfWQ&usqp=CAU",
+                    img: "https://pblog.hertz.com/wp-content/uploads/2019/02/img-lrg-TOPGOTHICCHURCHES.jpg"
                 },
                 {
                     name: "Health",
-                    img: "https://revcycleintelligence.com/images/site/article_headers/_normal/2017-12-12-patient-care.png",
-                },
+                    img: "https://www.customhospice.com/wp-content/uploads/2013/08/PeopleImages.com-ID30572.jpg"
+                 },
                 {
                     name: "Human and Civil Rights",
-                    img: "https://www.ups.com/assets/resources/images/knowledge-center/934x495/m10-934-x-495-in-service-of-human-and-civil-rights.jpg",
+                    img: "https://cdn.britannica.com/70/217070-050-250699A2/Black-Lives-Matter-protest-signs-Boston-Massachusetts-May-2020.jpg"
                 },
                 {
                     name: "Education",
-                    img: "https://www.habitatbroward.org/wp-content/uploads/2020/01/10-Benefits-Showing-Why-Education-Is-Important-to-Our-Society.jpg",
+                    img: "https://learnwellservices.com/wp-content/uploads/2017/12/Teacher-with-students-1.jpg"
                 },
                 {
                     name: "Environment",
-                    img: "https://keysight-h.assetsadobe.com/is/image/content/dam/keysight/en/img/about/corporate-social-responsibility/csr_environment_1200x900.png",
-                },
+                    img: "https://cdn.audleytravel.com/700/500/79/1314674-banff-national-park-alberta.jpg"
+                 },
                 {
                     name: "Animals",
-                    img: "https://ideas.ted.com/wp-content/uploads/sites/3/2020/03/final_credit-alamy-1.jpg",
+                    img: "https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2020/07/09151754/Golden-Retriever-puppy-standing-outdoors-500x486.jpg",
                 }
             ],
             selectedCategories: [],
@@ -173,78 +178,170 @@ export default class SetupScreen extends React.Component{
 
         if (this.state.onCategories) {
             categoryScreen = 
+
             <div style={{display: 'flex', width: "100%", flexWrap: 'wrap', alignItems: "center", justifyContent: 'center', overflow: 'hidden', flexDirection: 'column'}}>
-              <h1 style={{marginBottom: 40}}>Welcome! Select your interests below</h1>
-              <GridList cellHeight={180} style={{width: "80%"}} cols={4} ref={this.gridRef}>
+             
+              <Typography style={{marginTop: 40, marginBottom: 40}} component="h1" variant="h5">
+              Welcome! Select your interests below
+            </Typography>
+              <GridList cellHeight={180} style = {{"display": "flex", "alignItems":"center", "marginLeft": 300, "marginRight": 40}} cols={4} ref={this.gridRef}>
                 {this.state.categories.map((category) => (
-                  <GridListTile key={category.name} id={category.name} onClick={() => this.addCharity(category)}>
+                  <GridListTile style = {{margin: 10}}key={category.name} id={category.name} onClick={() => this.addCharity(category)}>
                     <img src={category.img} alt={category.name}/>
                     <GridListTileBar
+        
                       title={category.name}
                     />
                   </GridListTile>
                 ))}
               </GridList>
               <div style={{justifyContent: 'space-around', alignItems: 'center', marginTop: 20}}>
-                  <Button variant="outline-primary" onClick={this.toFilters}>Next</Button>
+                  <Button color="primary" onClick={this.toFilters}>Next</Button>
               </div>
             </div>
         }
 
         if (this.state.onFilters) {
             filterScreen = 
-            <div style={{display: 'flex', width: "100%", flexWrap: 'wrap', alignItems: "center", justifyContent: 'center', overflow: 'hidden', flexDirection: 'column'}}>
-                <h1 style={{marginBottom: 40}}>Enter donation options</h1>
-                <Form>
-                    <Form.Group>
-                        <Form.Label>What size charities would you like to support?</Form.Label>
-                        <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-                            <Form.Label style={{fontSize: '14px', margin: 8, marginRight: 6}}>Small</Form.Label>
-                            <Form.Check
-                              checked={this.state.small}
-                              onChange={this.handleChangeSmall} />
-                            <Form.Label style={{fontSize: '14px', margin: 8, marginRight: 6}}>Medium</Form.Label>
-                            <Form.Check
-                              checked={this.state.medium}
-                              onChange={this.handleChangeMedium} />
-                            <Form.Label style={{fontSize: '14px', margin: 8, marginRight: 6}}>Large</Form.Label>
-                            <Form.Check
-                              checked={this.state.large}
-                              onChange={this.handleChangeLarge} />
-                        </div>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Would you like to focus on local issues?</Form.Label>
-                        <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-                            <Form.Label style={{fontSize: '14px', margin: 8, marginRight: 6}}>Local</Form.Label>
-                            <Form.Check
-                              checked={this.state.local}
-                              onChange={this.handleChangeLocal} />
-                            <Form.Label style={{fontSize: '14px', margin: 8, marginRight: 6}}>Global</Form.Label>
-                            <Form.Check
-                              checked={this.state.global}
-                              onChange={this.handleChangeGlobal} />
-                        </div>
-                    </Form.Group>
-                    <Form.Group>
-                        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}>
-                            <Form.Label>How much would you like to contribute each month?</Form.Label>
-                            <Form.Label style={{alignSelf: 'center', fontWeight: '500', fontSize: '20px'}}>${this.state.donationAmount}</Form.Label>
-                        </div>
-                        <RangeSlider
-                          value={this.state.donationAmount}
-                          onChange={e => this.setState({donationAmount: e.target.value})}
-                          min={20}
-                          max={100}
-                        />
-                    </Form.Group>
-                </Form>
-                <div style={{justifyContent: 'space-around', alignItems: 'center', marginTop: 20, marginBottom: 20}}>
-                    <Button variant="outline-primary" style={{marginRight: 100}} onClick={this.toCategories}>Back</Button>
-                    <Button variant="outline-primary" style={{marginLeft: 100}} onClick={this.toConfirmation}>Next</Button>
-              </div>
-            </div>
+                <React.Fragment>
+                <Typography variant="h6" gutterBottom>
+                    Shipping address
+                </Typography>
+                <Grid container spacing={3}>
+                    <Grid item xs={12} sm={6}>
+                    <TextField
+                        required
+                        id="firstName"
+                        name="firstName"
+                        label="First name"
+                        fullWidth
+                        autoComplete="given-name"
+                    />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                    <TextField
+                        required
+                        id="lastName"
+                        name="lastName"
+                        label="Last name"
+                        fullWidth
+                        autoComplete="family-name"
+                    />
+                    </Grid>
+                    <Grid item xs={12}>
+                    <TextField
+                        required
+                        id="address1"
+                        name="address1"
+                        label="Address line 1"
+                        fullWidth
+                        autoComplete="shipping address-line1"
+                    />
+                    </Grid>
+                    <Grid item xs={12}>
+                    <TextField
+                        id="address2"
+                        name="address2"
+                        label="Address line 2"
+                        fullWidth
+                        autoComplete="shipping address-line2"
+                    />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                    <TextField
+                        required
+                        id="city"
+                        name="city"
+                        label="City"
+                        fullWidth
+                        autoComplete="shipping address-level2"
+                    />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                    <TextField id="state" name="state" label="State/Province/Region" fullWidth />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                    <TextField
+                        required
+                        id="zip"
+                        name="zip"
+                        label="Zip / Postal code"
+                        fullWidth
+                        autoComplete="shipping postal-code"
+                    />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                    <TextField
+                        required
+                        id="country"
+                        name="country"
+                        label="Country"
+                        fullWidth
+                        autoComplete="shipping country"
+                    />
+                    </Grid>
+                    <Grid item xs={12}>
+                    <FormControlLabel
+                        control={<Checkbox color="secondary" name="saveAddress" value="yes" />}
+                        label="Use this address for payment details"
+                    />
+                    </Grid>
+                </Grid>
+                </React.Fragment>
         }
+
+            // <div style={{display: 'flex', width: "100%", flexWrap: 'wrap', alignItems: "center", justifyContent: 'center', overflow: 'hidden', flexDirection: 'column'}}>
+            //     <h1 style={{marginBottom: 40}}>Enter donation options</h1>
+            //     <Form>
+            //         <Form.Group>
+            //             <Form.Label>What size charities would you like to support?</Form.Label>
+            //             <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+            //                 <Form.Label style={{fontSize: '14px', margin: 8, marginRight: 6}}>Small</Form.Label>
+            //                 <Form.Check
+            //                   checked={this.state.small}
+            //                   onChange={this.handleChangeSmall} />
+            //                 <Form.Label style={{fontSize: '14px', margin: 8, marginRight: 6}}>Medium</Form.Label>
+            //                 <Form.Check
+            //                   checked={this.state.medium}
+            //                   onChange={this.handleChangeMedium} />
+            //                 <Form.Label style={{fontSize: '14px', margin: 8, marginRight: 6}}>Large</Form.Label>
+            //                 <Form.Check
+            //                   checked={this.state.large}
+            //                   onChange={this.handleChangeLarge} />
+            //             </div>
+            //         </Form.Group>
+            //         <Form.Group>
+            //             <Form.Label>Would you like to focus on local issues?</Form.Label>
+            //             <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+            //                 <Form.Label style={{fontSize: '14px', margin: 8, marginRight: 6}}>Local</Form.Label>
+            //                 <Form.Check
+            //                   checked={this.state.local}
+            //                   onChange={this.handleChangeLocal} />
+            //                 <Form.Label style={{fontSize: '14px', margin: 8, marginRight: 6}}>Global</Form.Label>
+            //                 <Form.Check
+            //                   checked={this.state.global}
+            //                   onChange={this.handleChangeGlobal} />
+            //             </div>
+            //         </Form.Group>
+            //         <Form.Group>
+            //             <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}>
+            //                 <Form.Label>How much would you like to contribute each month?</Form.Label>
+            //                 <Form.Label style={{alignSelf: 'center', fontWeight: '500', fontSize: '20px'}}>${this.state.donationAmount}</Form.Label>
+            //             </div>
+            //             <RangeSlider
+            //               value={this.state.donationAmount}
+            //               onChange={e => this.setState({donationAmount: e.target.value})}
+            //               min={20}
+            //               max={100}
+            //             />
+            //         </Form.Group>
+            //     </Form>
+            //     <div style={{justifyContent: 'space-around', alignItems: 'center', marginTop: 20, marginBottom: 20}}>
+            //         <Button color="primary" style={{marginRight: 100}} onClick={this.toCategories}>Back</Button>
+            //         <Button color="primary" style={{marginLeft: 100}} onClick={this.toConfirmation}>Next</Button>
+            //   </div>
+            // </div>
+        
 
         if (this.state.onConfirmation) {
             confirmationScreen=

@@ -70,7 +70,7 @@ class HomeScreen extends React.Component {
         return (
             <Grid container component="main" style = {{"height": "100vh"}}>
             <CssBaseline />
-            <Grid item xs={false} sm={4} md={7} style = {{"backgroundSize": "cover", "backgroundPosition": "center", "backgroundImage": 'url(https://source.unsplash.com/random)'}}/>
+            <Grid item xs={false} sm={4} md={7} style = {{"backgroundSize": "cover", "backgroundPosition": "center", "backgroundImage": 'url(https://img.jakpost.net/c/2019/01/23/2019_01_23_63773_1548218091._large.jpg)'}}/>
             <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                 <div style = {{"display": "flex","flexDirection": "column", "alignItems":"center", "marginLeft": 80, "marginRight": 40}}>
                 <Avatar style = {{"margin": 10, "marginTop": 100}}>
