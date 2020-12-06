@@ -16,6 +16,8 @@ import Link from '@material-ui/core/Link';
 import firebase from 'firebase';
 import 'firebase/firestore';
 import heartinhand from './charity.jpg';
+import { ReactSearchAutocomplete } from "react-search-autocomplete";
+ 
 
 function Copyright() {
   return (
@@ -86,11 +88,18 @@ class Profile extends React.Component  {
             first_name: "",
             last_name: "",
             charities: [],
-            preferences: [""],
-            display: []
+            all_charities: [],
+            charity_titles: [],
+            charity_descs: [],
+            preferences: [],
+            preferences_str: "",
+            item: ""
         };
 
         this.readData = this.readData.bind(this);
+        this.handleOnFocus = this.handleOnFocus.bind(this);
+        this.handleOnSearch = this.handleOnSearch.bind(this);
+        this.handleOnSelect = this.handleOnSelect.bind(this);
     }
     
     readData(){
@@ -113,19 +122,48 @@ class Profile extends React.Component  {
                     this.setState({preferences: doc.data().preferences}, () => {console.log(this.state.preferences)});
                 }
             });
+
+            let tempStr = "";
+            for(let k = 0; k < this.state.preferences.length; k++){
+                tempStr = tempStr + this.state.preferences[k] + ", ";
+            }
+            this.setState({preferences_str: tempStr}, () => {console.log(this.state.preferences_str)});
         });
+        
         firebase.firestore().collection("charities").get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                this.state.charities.forEach((charity) => {
-                    if (doc.id === charity.charityId){
-                        var joined = this.state.display.concat([doc.data().name, doc.data().description]);
-                        this.setState({display: joined});
-                        console.log(this.state.display);
+                if(this.state.all_charities.length <= 1000) {
+                    var joined = this.state.all_charities.concat({id: this.state.all_charities.length + 1, name: doc.data().name, userid: doc.id});
+                    this.setState({all_charities: joined});
+                }
+                for(let i = 0; i < this.state.charities.length; i++){
+                    if (doc.id == this.state.charities[i].charityId){
+                        /*let tempList = this.state.charity_titles.slice();
+                        let tempList2 = this.state.charity_descs.slice();
+                        tempList[i] = doc.data().name;
+                        tempList2[i] = doc.data().description;
+                        this.setState({charity_titles: tempList});
+                        this.setState({charity_descs: tempList2});*/
+                        let tempList = this.state.charity_titles.slice();
+                        tempList[i] = { name: doc.data().name, desc: doc.data().description};
+                        this.setState({charity_titles: tempList});
                     }
-                    
-                });
+                }
             });
         });
+        console.log(this.state.all_charities)
+        // firebase.firestore().collection("charities").get().then((querySnapshot) => {
+        //     querySnapshot.forEach((doc) => {
+        //         this.state.charities.forEach((charity) => {
+        //             if (doc.id === charity.charityId){
+        //                 var joined = this.state.display.concat([doc.data().name, doc.data().description]);
+        //                 this.setState({display: joined});
+        //                 console.log(this.state.display);
+        //             }
+                    
+        //         });
+        //     });
+        // });
         
         
     }
@@ -180,6 +218,24 @@ class Profile extends React.Component  {
         });
     }
 
+    handleOnSearch(string, cached) {
+        // onSearch returns the string searched and if
+        // the values are cached. If the values are cached
+        // "cached" contains the cached values, if not, returns false
+        console.log(string, cached);
+    }
+     
+    handleOnSelect(item) {
+        // the item selected
+        console.log(item);
+        this.setState({item: item})
+        this.props.history.push('/charity/item.userid')
+    }
+     
+    handleOnFocus() {
+        console.log("Focused");
+    }
+     
     render(){
         return (
             <React.Fragment>
@@ -204,7 +260,7 @@ class Profile extends React.Component  {
                     <br></br>Here, you can see your current charity portfolio, manage your donation plan, and discover new charities.
                     Giving is easy and powerful.
                     </Typography>
-                    <div style={{marginTop: 40}}>
+                    <div style={{marginTop: 40, marginBottom: 50}}>
                     <Grid container spacing={2} justify="center">
                         <Grid item>
                         <Button variant="contained" color="primary" onClick = {this.handleSubmitCharity}>
@@ -218,6 +274,14 @@ class Profile extends React.Component  {
                         </Grid>
                     </Grid>
                     </div>
+                    <ReactSearchAutocomplete
+                        
+                        items={this.state.all_charities}
+                        onSearch={this.handleOnSearch}
+                        onSelect={this.handleOnSelect}
+                        onFocus={this.handleOnFocus}
+                        autoFocus
+                    />
                 </Container>
                 </div>
                 <Container style={{paddingTop: 80, paddingBottom: 80}} maxWidth="md">
@@ -248,7 +312,7 @@ class Profile extends React.Component  {
                         />
                         <CardContent style={{flexGrow: 1}}>
                             <Typography gutterBottom variant="h5" component="h2">
-                            {this.state.box_info[card].desc}
+                            {card === 4 ? this.state.preferences_str : this.state.box_info[card].desc}
                             </Typography>
                             <Typography>
                             {this.state.box_info[card].title}
@@ -262,8 +326,17 @@ class Profile extends React.Component  {
                         </Card>
                     </Grid>
                     ))}
-                    {num.map((card) => (
-                    <Grid item key={card} xs={12} sm={6} md={3}>
+                    <Grid item xs={12} sm={6} md={12}>
+                        <Card style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
+                        <CardContent style={{flexGrow: 1}}>
+                            <Typography gutterBottom variant="h5" component="h2" align='center'>
+                            INFORMATION ABOUT YOUR CHARITIES:
+                            </Typography>
+                        </CardContent>
+                        </Card>
+                    </Grid>
+                    {this.state.charity_titles.map((card) => (
+                    <Grid item xs={12} sm={6} md={6}>
                         <Card style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
                         <a href="/charityex">
                         <CardMedia
@@ -274,10 +347,10 @@ class Profile extends React.Component  {
                         </a>
                         <CardContent style={{flexGrow: 1}}>
                             <Typography gutterBottom variant="h5" component="h2">
-                            {this.state.display[card*2]}
+                            {card.name}
                             </Typography>
                             <Typography>
-                            {this.state.display[card*2+1]}
+                            {card.desc}
                             </Typography>
                         </CardContent>
                         </Card>

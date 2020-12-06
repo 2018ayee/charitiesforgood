@@ -218,11 +218,13 @@ export default class SetupScreen extends React.Component{
                 c.push({charityId: r.id, value: valuePerCharity})
             })
 
-            const updateProfmise = await userRef.update({
+            const updatePromise = await userRef.update({
                 preferences: this.state.selectedCategories,
                 charities: c
             })
-            this.props.history.push('/profile')
+
+            this.setState({onFilters: false, onConfirmation: true})
+        
             
             // this.setState({onFilters: false, onConfirmation: true})
         }
