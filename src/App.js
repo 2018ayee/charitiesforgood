@@ -3,8 +3,9 @@ import ProfileHome from './Components/ProfileHome';
 import firebase from 'firebase';
 import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen';
-import SignUp from "./Components/SignUp.js";
-import SetupScreen from './screens/SetupScreen';
+
+import SignUp from "./Components/SignUp.js"
+import Charities from './Components/Charities';
 
 function App() {
   if (!firebase.apps.length) {
@@ -38,7 +39,10 @@ function App() {
         <Route path="/home" component = {HomeScreen}>
 
         </Route>
-        <Route path="/home" component = {SignUp}>
+        <Route path="/signUp" component = {SignUp}>
+        
+        </Route>
+        <Route path="/charities" component = {Charities}>
         </Route>
         {/* <Route path="/">
           <Home /> */}
