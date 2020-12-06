@@ -60,27 +60,29 @@ class SignUp extends React.Component  {
         this.email = this.email.bind(this);
     }
     
-    handleSubmit(e) {
+    handleSubmit = (e) => {
         const db = firebase.firestore();
         firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
             .then((user) => {
-                db.collection("users").doc(this.state.email).set({
+                 db.collection("users").add({
                     firstName: this.state.firstName,
                     lastName: this.state.lastName,
-                    email: this.state.email
+                    email: this.state.email,
+                    charities: [],
+                    preferences: [],
                 })
                 .then(function() {
                     console.log("Document successfully written!");
+                    window.location.href = '/setup'
                 })
                 .catch(function(error) {
                     console.error("Error writing document: ", error);
                 });
-                this.props.history.push('/setup')
             })
             .catch((error) => {
                 var errorCode = error.code;
                 var errorMessage = error.message;
-                console.log(errorCode)
+                alert(errorMessage)
         });
     }
 
