@@ -230,7 +230,7 @@ class Profile extends React.Component  {
         // the item selected
         console.log(item);
         this.setState({item: item})
-        this.props.history.push('/charity/item.userid')
+        this.props.history.push('/charity/' + item.userid)
     }
      
     handleOnFocus() {
