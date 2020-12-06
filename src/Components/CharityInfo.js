@@ -167,28 +167,50 @@ class CharityInfo extends React.component {
     this.gettot_rev = this.gettot_rev.bind(this);
   }
 
-  getadmin_exp_p(id) {
-      this.setState({firstName: e.target.value});
+  getadmin_exp_p(){
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user){
+            this.setState({userid: user.uid}, () => {console.log(this.state.userid)});
+        } else {
+            console.log("error");
+        }
+    })
+
+    firebase.firestore().collection("users").get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            if (doc.id === this.state.userid){
+                this.setState({charityId: doc.data().charityId}, () => {console.log(this.state.charityId)});
+            }
+        });
+    });
+
+    firebase.auth().onAuthStateChanged((charity) => {
+      if (charity){
+          this.setState({charityid: charity.uid}, () => {console.log(this.state.charityid)});
+      } else {
+          console.log("error");
+      }
+    })
+
+    firebase.firestore().collection("charities").get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+          if (doc.id === this.state.charityid){
+              this.setState({admin_exp_p: doc.data().admin_exp_p}, () => {console.log(this.state.admin_exp_p)});
+          }
+      });
+    });
   }
 
-  lastName(e) {
-      this.setState({lastName: e.target.value});
-  }
-
-  password(e){
-      this.setState({password: e.target.value});
-  }
-
-  email(e){
-      this.setState({email: e.target.value});
+  componentDidMount(){
+      this.getadmin_exp_p(this.state.charityid);
   }
 
   render(){
     return (
       <React.Fragment>
         <CssBaseline />
-        <AppBar position="static" color="default" elevation={0} className={classes.appBar}>
-          <Toolbar className={classes.toolbar}>
+        <AppBar position="static" color="default" elevation={0} style={{classes.appBar}}>
+          <Toolbar style={{flexWrap: 'wrap'}}>
             <CameraIcon className={classes.icon} />
             <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
               Charitable
