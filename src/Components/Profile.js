@@ -63,13 +63,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const cards = [0, 1, 2, 3, 4, 5];
+const top_cards = [0, 1, 2];
+const med_cards = [3, 4];
+const bottom_cards = [5];
 const boxes = [
     { title: 'TOTAL DONATED', desc: '$55.08' },
     { title: 'TOTAL NUMBER OF CHARITIES', desc: '4' },
+    { title: '[something]', desc: '[something]' },
     { title: 'CURRENT DONATION PLAN', desc: '$25.00 / month' },
-    { title: 'title', desc: 'this is the descriptionn' },
-    { title: 'title', desc: 'this is the descriptionn' },
+    { title: '[something else]', desc: '[something else]' },
     { title: 'title', desc: 'this is the descriptionn' },
 ];
 
@@ -116,8 +118,46 @@ export default function Album() {
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {cards.map((card) => (
+            {top_cards.map((card) => (
               <Grid item key={card} xs={12} sm={6} md={4}>
+                <Card className={classes.card}>
+                  <CardContent className={classes.cardContent}>
+                    <Typography gutterBottom variant="h5" component="h2" align='center'>
+                      {boxes[card].desc}
+                    </Typography>
+                    <Typography align='center'>
+                      {boxes[card].title}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+            {med_cards.map((card) => (
+              <Grid item key={card} xs={12} sm={6} md={6}>
+                <Card className={classes.card}>
+                  <CardMedia
+                    className={classes.cardMedia}
+                    image="https://source.unsplash.com/random"
+                    title="Image title"
+                  />
+                  <CardContent className={classes.cardContent}>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {boxes[card].desc}
+                    </Typography>
+                    <Typography>
+                      {boxes[card].title}
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Button size="small" color="primary">
+                      CHANGE
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+            {bottom_cards.map((card) => (
+              <Grid item key={card} xs={12} sm={6} md={12}>
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
@@ -143,32 +183,7 @@ export default function Album() {
                 </Card>
               </Grid>
             ))}
-            <Grid xs={12}>
-                <Card className={classes.box}>
-                    <CardMedia
-                    className={classes.cardMedia}
-                    image="https://source.unsplash.com/random"
-                    title="Image title"
-                    />
-                    <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                        Heading
-                    </Typography>
-                    <Typography>
-                        This is a media card. You can use this section to describe the content.
-                    </Typography>
-                    </CardContent>
-                    <CardActions>
-                    <Button size="small" color="primary">
-                        View
-                    </Button>
-                    <Button size="small" color="primary">
-                        Edit
-                    </Button>
-                    </CardActions>
-                </Card>
             </Grid>
-          </Grid>
         </Container>
       </main>
       {/* Footer */}
