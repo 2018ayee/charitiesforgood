@@ -87,7 +87,6 @@ class Profile extends React.Component  {
             first_name: "",
         };
 
-        this.getUserID = this.getUserID.bind(this);
         this.getFirstName = this.getFirstName.bind(this);
     }
     
@@ -110,7 +109,6 @@ class Profile extends React.Component  {
     }
 
     componentDidMount(){
-        //this.getUserID();
         this.getFirstName(this.state.userid);
     }
 
