@@ -17,7 +17,6 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Avatar from '@material-ui/core/Avatar';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -71,7 +70,7 @@ export default class SetupScreen extends React.Component{
                 },
                 {
                     name: "Research and Public Policy",
-                    img: "https://cdn.the-scientist.com/assets/articleNo/66520/aImg/33891/women-in-science-l.jpg" 
+                    img: "https://cdn.the-scientist.com/assets/articleNo/66520/aImg/33891/women-in-science-l.jpg"
                 },
                 {
                     name: "Religion",
@@ -244,10 +243,10 @@ export default class SetupScreen extends React.Component{
 
         if (this.state.onCategories) {
 
-            categoryScreen = 
+            categoryScreen =
 
             <div style={{display: 'flex', width: "100%", flexWrap: 'wrap', alignItems: "center", justifyContent: 'center', overflow: 'hidden', flexDirection: 'column'}}>
-             
+
               <Typography style={{marginTop: 40, marginBottom: 40}} component="h1" variant="h5">
               Welcome! Select your interests below
             </Typography>
@@ -256,7 +255,7 @@ export default class SetupScreen extends React.Component{
                   <GridListTile style = {{margin: 10}}key={category.name} id={category.name} onClick={() => this.addCharity(category)}>
                     <img src={category.img} alt={category.name}/>
                     <GridListTileBar
-        
+
                       title={category.name}
                     />
                   </GridListTile>
@@ -267,12 +266,11 @@ export default class SetupScreen extends React.Component{
               </div>
               <div className="mb-3"></div>
             </div>
-            </div>
         }
 
         if (this.state.onFilters) {
 
-            filterScreen = 
+            filterScreen =
             <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div style={{marginTop: 80, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
@@ -319,7 +317,7 @@ export default class SetupScreen extends React.Component{
                     </FormGroup>
                     </Grid>
                     <Grid item xs={12}>
-                    <FormLabel>How much would you like to contribute each month?</FormLabel>   
+                    <FormLabel>How much would you like to contribute each month?</FormLabel>
                     <FormLabel style={{marginTop: 30, display: 'flex', flexDirection: 'column', alignItems: 'center', fontWeight: '500', fontSize: '20px'}}>${this.state.donationAmount}</FormLabel>
                     <RangeSlider
                           value={this.state.donationAmount}
@@ -329,10 +327,10 @@ export default class SetupScreen extends React.Component{
                         />
 
                     </Grid>
-                
+
                 </Grid>
                 <Button
-                    
+
                     fullWidth
                     variant="contained"
                     color="primary"
@@ -353,7 +351,7 @@ export default class SetupScreen extends React.Component{
             </Box>
             </Container>
         }
-        
+
 
         if (this.state.onConfirmation) {
             confirmationScreen=
