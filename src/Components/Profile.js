@@ -15,6 +15,7 @@ import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import firebase from 'firebase';
 import 'firebase/firestore';
+import heartinhand from './charity.jpg';
 
 function Copyright() {
   return (
@@ -74,16 +75,20 @@ class Profile extends React.Component  {
         super(props);
         this.state = {
             box_info: [
-                { title: 'TOTAL DONATED', desc: '$55.08' },
                 { title: 'TOTAL NUMBER OF CHARITIES', desc: '4' },
-                { title: '[something]', desc: '[something]' },
+                { title: 'TOTAL DONATED', desc: '$55.08' },
+                { title: 'MONTHS OF GIVING', desc: '8' },
                 { title: 'CURRENT DONATION PLAN', desc: '$25.00 / month' },
-                { title: '[something else]', desc: '[something else]' },
+                { title: 'YOUR CHARITIES', desc: 'Animals, Health' },
             ],
             userid: "",
             first_name: "",
             last_name: "",
-            charities: [0, 1, 2, 3],
+            charities: [],
+            charity_titles: [],
+            charity_descs: [],
+            preferences: [],
+            preferences_str: "",
         };
 
         this.readData = this.readData.bind(this);
@@ -104,6 +109,31 @@ class Profile extends React.Component  {
                     this.setState({first_name: doc.data().firstName.toLowerCase()}, () => {console.log(this.state.first_name)});
                     this.setState({last_name: doc.data().lastName.toLowerCase()}, () => {console.log(this.state.last_name)});
                     this.setState({charities: doc.data().charities}, () => {console.log(this.state.charities)});
+                    this.setState({preferences: doc.data().preferences}, () => {console.log(this.state.preferences)});
+                }
+            });
+
+            let tempStr = "";
+            for(let k = 0; k < this.state.preferences.length; k++){
+                tempStr = tempStr + this.state.preferences[k] + ", ";
+            }
+            this.setState({preferences_str: tempStr}, () => {console.log(this.state.preferences_str)});
+        });
+        
+        firebase.firestore().collection("charities").get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                for(let i = 0; i < this.state.charities.length; i++){
+                    if (doc.id == this.state.charities[i].charityId){
+                        /*let tempList = this.state.charity_titles.slice();
+                        let tempList2 = this.state.charity_descs.slice();
+                        tempList[i] = doc.data().name;
+                        tempList2[i] = doc.data().description;
+                        this.setState({charity_titles: tempList});
+                        this.setState({charity_descs: tempList2});*/
+                        let tempList = this.state.charity_titles.slice();
+                        tempList[i] = { name: doc.data().name, desc: doc.data().description};
+                        this.setState({charity_titles: tempList});
+                    }
                 }
             });
         });
@@ -111,6 +141,52 @@ class Profile extends React.Component  {
 
     componentDidMount(){
         this.readData(this.state.userid);
+    }
+
+    // NEEDS TO BE FIXED: COPIED FROM HOMESCREEN.js
+    //Purpose: onClick for the button Update Interests should take you to /setup
+    handleSubmitInterests(e) {
+        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+        .then((user) => {
+            this.props.history.push('/setup')
+        })
+        .catch((error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            if (errorCode === "auth/invalid-email") {
+                this.setState({ emailError: true, passwordError: false })
+            }
+            else if (errorCode === "auth/wrong-password") {
+                this.setState({ emailError: false, passwordError: true })
+            }
+            else {
+                this.setState({ emailError: true, passwordError: true })
+            }
+            alert(errorMessage)
+        });
+    }
+    
+    // NEEDS TO BE FIXED: COPIED FROM HOMESCREEN.js
+    //Purpose: onClick for the button Find Charities should take you to /charityex
+    handleSubmitCharity(e) {
+        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+        .then((user) => {
+            this.props.history.push('/charityex')
+        })
+        .catch((error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            if (errorCode === "auth/invalid-email") {
+                this.setState({ emailError: true, passwordError: false })
+            }
+            else if (errorCode === "auth/wrong-password") {
+                this.setState({ emailError: false, passwordError: true })
+            }
+            else {
+                this.setState({ emailError: true, passwordError: true })
+            }
+            alert(errorMessage)
+        });
     }
 
     render(){
@@ -133,18 +209,20 @@ class Profile extends React.Component  {
                     Hi, {this.state.first_name.charAt(0).toUpperCase() + this.state.first_name.slice(1).toLowerCase()}
                     </Typography>
                     <Typography variant="h5" align="center" color="textSecondary" paragraph>
-                    Welcome to the Charitable home page! Here, you can see all your important information and stuff... [CHANGE LATER]
+                    Welcome to your Charitable home page! 
+                    <br></br>Here, you can see your current charity portfolio, manage your donation plan, and discover new charities.
+                    Giving is easy and powerful.
                     </Typography>
                     <div style={{marginTop: 40}}>
                     <Grid container spacing={2} justify="center">
                         <Grid item>
-                        <Button variant="contained" color="primary">
+                        <Button variant="contained" color="primary" onClick = {this.handleSubmitCharity}>
                             Find charities
                         </Button>
                         </Grid>
                         <Grid item>
-                        <Button variant="outlined" color="primary">
-                            [some other action]
+                        <Button variant="outlined" color="primary" onClick = {this.handleSubmitInterests}>
+                            Update Interests
                         </Button>
                         </Grid>
                     </Grid>
@@ -173,12 +251,13 @@ class Profile extends React.Component  {
                         <Card style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
                         <CardMedia
                             style={{paddingTop: '56.25%'}}
-                            image="https://source.unsplash.com/random"
+                            // image="https://source.unsplash.com/random"
+                            image={heartinhand}
                             title="Image title"
                         />
                         <CardContent style={{flexGrow: 1}}>
                             <Typography gutterBottom variant="h5" component="h2">
-                            {this.state.box_info[card].desc}
+                            {card === 4 ? this.state.preferences_str : this.state.box_info[card].desc}
                             </Typography>
                             <Typography>
                             {this.state.box_info[card].title}
@@ -192,22 +271,31 @@ class Profile extends React.Component  {
                         </Card>
                     </Grid>
                     ))}
-                    {this.state.charities.map((card) => (
-                    <Grid item key={card} xs={12} sm={6} md={3}>
+                    <Grid item xs={12} sm={6} md={12}>
+                        <Card style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
+                        <CardContent style={{flexGrow: 1}}>
+                            <Typography gutterBottom variant="h5" component="h2" align='center'>
+                            INFORMATION ABOUT YOUR CHARITIES:
+                            </Typography>
+                        </CardContent>
+                        </Card>
+                    </Grid>
+                    {this.state.charity_titles.map((card) => (
+                    <Grid item xs={12} sm={6} md={6}>
                         <Card style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
                         <a href="/charityex">
                         <CardMedia
                             style={{paddingTop: '56.25%'}}
-                            image="https://source.unsplash.com/random"
+                            // image="https://source.unsplash.com/random"
                             title="Image title"
                         />
                         </a>
                         <CardContent style={{flexGrow: 1}}>
                             <Typography gutterBottom variant="h5" component="h2">
-                            [charity title]
+                            {card.name}
                             </Typography>
                             <Typography>
-                            [charity desc]
+                            {card.desc}
                             </Typography>
                         </CardContent>
                         </Card>
