@@ -1,19 +1,24 @@
 import React from 'react';
+import firebase from 'firebase';
+import ConfirmationScreen from "./ConfirmationScreen"
 
 export default class SetupScreen extends React.Component{
     constructor(props) {
         super(props);
 
         this.state = {
-            onCategories: true,
+            onCategories: false,
             onFilters: false,
-            onConfirmation: false,
+            onConfirmation: true,
             onPayment: false
         };
     }
 
     componentDidMount() {
         console.log('hi')
+        const db = firebase.firestore()
+        //this.props.user
+
     }
 
     render(){
@@ -23,17 +28,16 @@ export default class SetupScreen extends React.Component{
         let paymentScreen;
 
         if (this.state.onCategories) {
-            categoryScreen = 
+            categoryScreen =
             <div>
-                
             </div>
         }
 
-        else if (this.state.filterScreen) {
+        else if (this.state.onFilters) {
 
         }
 
-        else if (this.confirmationScreen) {
+        else if (this.onConfirmation) {
 
         }
 
@@ -43,11 +47,8 @@ export default class SetupScreen extends React.Component{
 
         return(
             <div>
-                {categoryScreen}
-                {filterScreen}
-                {confirmationScreen}
-                {paymentScreen}
+                <ConfirmationScreen />
             </div>
         )
-    } 
+    }
 }
