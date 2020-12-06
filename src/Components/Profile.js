@@ -85,6 +85,7 @@ class Profile extends React.Component  {
             first_name: "",
             last_name: "",
             charities: [],
+            charity_ids: [],
             charity_titles: [],
             charity_descs: [],
             preferences: [],
@@ -122,17 +123,17 @@ class Profile extends React.Component  {
         
         firebase.firestore().collection("charities").get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
+                let counter = 0;
                 for(let i = 0; i < this.state.charities.length; i++){
                     if (doc.id == this.state.charities[i].charityId){
-                        /*let tempList = this.state.charity_titles.slice();
-                        let tempList2 = this.state.charity_descs.slice();
-                        tempList[i] = doc.data().name;
-                        tempList2[i] = doc.data().description;
-                        this.setState({charity_titles: tempList});
-                        this.setState({charity_descs: tempList2});*/
                         let tempList = this.state.charity_titles.slice();
-                        tempList[i] = { name: doc.data().name, desc: doc.data().description};
+                        let tempList2 = this.state.charity_ids.slice();
+                        tempList[i] = { name: doc.data().name, desc: doc.data().description, count: i};
+                        tempList2[i] = doc.id;
+                        console.log(doc.data());
                         this.setState({charity_titles: tempList});
+                        this.setState({charity_ids: tempList2});
+                        counter++;
                     }
                 }
             });
@@ -141,52 +142,6 @@ class Profile extends React.Component  {
 
     componentDidMount(){
         this.readData(this.state.userid);
-    }
-
-    // NEEDS TO BE FIXED: COPIED FROM HOMESCREEN.js
-    //Purpose: onClick for the button Update Interests should take you to /setup
-    handleSubmitInterests(e) {
-        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-        .then((user) => {
-            this.props.history.push('/setup')
-        })
-        .catch((error) => {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            if (errorCode === "auth/invalid-email") {
-                this.setState({ emailError: true, passwordError: false })
-            }
-            else if (errorCode === "auth/wrong-password") {
-                this.setState({ emailError: false, passwordError: true })
-            }
-            else {
-                this.setState({ emailError: true, passwordError: true })
-            }
-            alert(errorMessage)
-        });
-    }
-    
-    // NEEDS TO BE FIXED: COPIED FROM HOMESCREEN.js
-    //Purpose: onClick for the button Find Charities should take you to /charityex
-    handleSubmitCharity(e) {
-        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-        .then((user) => {
-            this.props.history.push('/charityex')
-        })
-        .catch((error) => {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            if (errorCode === "auth/invalid-email") {
-                this.setState({ emailError: true, passwordError: false })
-            }
-            else if (errorCode === "auth/wrong-password") {
-                this.setState({ emailError: false, passwordError: true })
-            }
-            else {
-                this.setState({ emailError: true, passwordError: true })
-            }
-            alert(errorMessage)
-        });
     }
 
     render(){
@@ -216,14 +171,13 @@ class Profile extends React.Component  {
                     <div style={{marginTop: 40}}>
                     <Grid container spacing={2} justify="center">
                         <Grid item>
-                        <Button variant="contained" color="primary" onClick = {this.handleSubmitCharity}>
-                            Find charities
-                        </Button>
                         </Grid>
                         <Grid item>
-                        <Button variant="outlined" color="primary" onClick = {this.handleSubmitInterests}>
+                        <a href='/setup'>
+                        <Button variant="contained" color="primary">
                             Update Interests
                         </Button>
+                        </a>
                         </Grid>
                     </Grid>
                     </div>
@@ -283,7 +237,7 @@ class Profile extends React.Component  {
                     {this.state.charity_titles.map((card) => (
                     <Grid item xs={12} sm={6} md={6}>
                         <Card style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
-                        <a href="/charityex">
+                        <a href={"/charity/" + this.state.charity_ids[card.count]}>
                         <CardMedia
                             style={{paddingTop: '56.25%'}}
                             // image="https://source.unsplash.com/random"
