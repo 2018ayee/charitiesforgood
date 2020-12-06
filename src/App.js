@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-ro
 import HomeScreen from './screens/HomeScreen.js';
 import SignUp from "./Components/SignUp.js"
 import Charities from './Components/Charities';
+import SetupScreen from './screens/SetupScreen.js'
 
 function App() {
   if (!firebase.apps.length) {
