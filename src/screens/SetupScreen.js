@@ -8,11 +8,9 @@ import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
 import arts from '../img/arts.jpg'
 import firebase from 'firebase/app'
-import 'firebase/auth'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import RangeSlider from 'react-bootstrap-range-slider';
-import firebase from 'firebase';
 import ConfirmationScreen from "./ConfirmationScreen"
 
 export default class SetupScreen extends React.Component{
@@ -20,7 +18,7 @@ export default class SetupScreen extends React.Component{
         super(props);
         this.gridRef = React.createRef();
         this.state = {
-            onCategories: false,
+            onCategories: true,
             onFilters: false,
             onConfirmation: false,
             onPayment: false,
@@ -143,6 +141,22 @@ export default class SetupScreen extends React.Component{
             alert("You must select locality of charity")
         }
         else {
+            var sizes = []
+            if (this.state.small) {
+                sizes.push("small")
+            }
+
+            if (this.state.medium) {
+                sizes.push("medium")
+            }
+
+            if (this.state.large) {
+                sizes.push("large")
+            }
+
+            const db = firebase.firestore();
+            var charitiesRef = db.collection("charities");
+            //var query = charitiesRef.where('size', 'in', sizes).where('category', 'in', this.state.selectedCategories)
             this.setState({onFilters: false, onConfirmation: true})
         }
     }
