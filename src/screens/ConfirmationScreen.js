@@ -87,7 +87,8 @@ export default function ConfirmationScreen(props) {
     },
   };
   const cardHeaderStyle = {
-    background: "#42a5f5",
+    background: "#3f51b5",
+    color: "white"
   };
   const tableRowStyle = {
     fontWeight: "bold",
